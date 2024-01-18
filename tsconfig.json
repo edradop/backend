@@ -18,10 +18,10 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "edd/common": [
+      "@edd/common": [
         "libs/common/src"
       ],
-      "edd/common/*": [
+      "@edd/common/*": [
         "libs/common/src/*"
       ]
     }
