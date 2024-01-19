@@ -14,7 +14,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -31,7 +31,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -46,7 +46,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -61,7 +61,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -76,7 +76,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -91,7 +91,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -106,7 +106,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -121,7 +121,7 @@
             "restart": true,
             "sourceMaps": true,
             "stopOnEntry": false,
-            "console": "integratedTerminal",
+            "console": "integratedTerminal"
         }
     ]
 }

@@ -6,3 +6,10 @@ export const PAYMENT = 'PAYMENT';
 export const STORAGE = 'STORAGE';
 export const USER = 'USER';
 export const USER_PORT = 'USER_PORT';
+
+// POSTGRES DB KEYS
+export const POSTGRES_HOST = 'POSTGRES_HOST';
+export const POSTGRES_PORT = 'POSTGRES_PORT';
+export const POSTGRES_USER = 'POSTGRES_USER';
+export const POSTGRES_PASSWORD = 'POSTGRES_PASSWORD';
+export const POSTGRES_DATABASE = 'POSTGRES_DATABASE';
