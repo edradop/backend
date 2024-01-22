@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
 import { ConfigModule } from '@nestjs/config';
+import { TokenModule } from './module/token/token.module';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
-  controllers: [AuthenticationController],
-  providers: [AuthenticationService],
+  imports: [ConfigModule.forRoot(), TokenModule],
 })
 export class AuthenticationModule {}

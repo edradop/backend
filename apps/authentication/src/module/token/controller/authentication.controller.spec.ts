@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from '../service/authentication.service';
 
 describe('AuthenticationController', () => {
   let authenticationController: AuthenticationController;
@@ -11,7 +11,9 @@ describe('AuthenticationController', () => {
       providers: [AuthenticationService],
     }).compile();
 
-    authenticationController = app.get<AuthenticationController>(AuthenticationController);
+    authenticationController = app.get<AuthenticationController>(
+      AuthenticationController,
+    );
   });
 
   describe('root', () => {

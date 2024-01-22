@@ -3,6 +3,7 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/edradop/src",
   "compilerOptions": {
+    "typeCheck": true,
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/edradop/tsconfig.app.json"

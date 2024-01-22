@@ -1,12 +1,17 @@
-import { EDRADOP, EDRADOP_DEFAULT_PORT } from '@edd/common';
+import { EDRADOP, EDRADOP_DEFAULT_PORT, SwaggerOptions, swagger } from '@edd/common';
 import { Logger, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import * as csurf from 'csurf';
 import helmet from 'helmet';
 import { EdradopModule } from './edradop.module';
-import * as cookieParser from 'cookie-parser';
+
+const swaggerOptions: SwaggerOptions = {
+  title: 'Edradop API',
+  description: 'Edradop API description',
+  version: '0.1.0',
+};
 
 async function bootstrap() {
   const app = await NestFactory.create(EdradopModule, { cors: true });
@@ -20,15 +25,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, document);
+  swagger(app, swaggerOptions);
 
   await app.listen(port);
 

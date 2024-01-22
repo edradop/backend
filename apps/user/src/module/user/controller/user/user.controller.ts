@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  ParseIntPipe,
-} from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { User } from '../entity/user.entity';
-import { UserService } from '../service/user.service';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { UserService } from '../../service';
+import { CreateUserDto, User } from '../../type';
 
 @Controller('user')
 export class UserController {
@@ -26,7 +17,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<User | null> {
+  findOne(@Param('id') id: string): Promise<User | null> {
     return this.userService.findOne(id);
   }
 
