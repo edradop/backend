@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AnalyticController } from './analytic.controller';
-import { AnalyticService } from './analytic.service';
+import { AnalyticController } from './controller';
+import { AnalyticService } from './service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

@@ -1,40 +1,41 @@
+import { PasswordValidation, UsernameValidation } from '@edd/common';
+import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import {
   BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Username } from './username.entity';
-import { Password } from './password.entity';
-import { Email } from './email.entity';
-import { IsNotEmpty, Length } from 'class-validator';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'varchar', length: 50 })
   @IsNotEmpty()
   @Length(3, 50)
+  @Column({ type: 'varchar', length: 50 })
   firstName!: string;
 
-  @Column({ type: 'varchar', length: 50 })
   @Length(3, 50)
   @IsNotEmpty()
+  @Column({ type: 'varchar', length: 50 })
   lastName!: string;
 
-  @OneToOne(() => Email, (email) => email.user)
-  email!: Email;
+  @IsNotEmpty()
+  @IsEmail()
+  @Column({ unique: true })
+  email!: string;
 
-  @OneToOne(() => Password, (password) => password.user)
-  password!: Password;
+  @PasswordValidation()
+  @Column({ select: false })
+  password!: string;
 
-  @OneToOne(() => Username, (username) => username.user)
-  username!: Username;
+  @UsernameValidation()
+  @Column()
+  username!: string;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -44,9 +45,10 @@ export class User {
 
   @BeforeInsert()
   generateUsername(): void {
-    const randomString = Math.random().toString(36).substring(2, 17); // Generates a random 15-character string
+    // Generates a random 15-character string
+    const randomString = Math.random().toString(36).substring(2, 17);
     if (!this.username) {
-      this.username = { username: `${this.firstName.substring(0, 5)}${randomString}` } as Username;
+      this.username = `${this.firstName.substring(0, 5)}${randomString}`;
     }
   }
 }

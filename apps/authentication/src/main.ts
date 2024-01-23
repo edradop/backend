@@ -1,7 +1,13 @@
 import { ConfigService } from '@nestjs/config';
 import { AuthenticationModule } from './authentication.module';
 
-import { AUTHENTICATION, AUTHENTICATION_DEFAULT_PORT, SwaggerOptions, swagger } from '@edd/common';
+import {
+  AUTHENTICATION,
+  AUTHENTICATION_DEFAULT_PORT,
+  SwaggerOptions,
+  commonMiddleware,
+  swagger,
+} from '@edd/common';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -16,10 +22,13 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   const port = config.get(AUTHENTICATION) || AUTHENTICATION_DEFAULT_PORT;
 
+  commonMiddleware(app);
   swagger(app, swaggerOptions);
   await app.listen(port);
 
-  Logger.log(`🚀 Authentication is running on ${port}`);
+  return app;
 }
 
-bootstrap();
+bootstrap().then(async (app) => {
+  Logger.log(`🚀 Authentication is dad running on ${await app.getUrl()}`);
+});

@@ -11,8 +11,9 @@ async function bootstrap() {
   const port = config.get(ANALYTIC) || ANALYTIC_DEFAULT_PORT;
 
   await app.listen(port);
-
-  Logger.log(`🚀 Analytic is dad running on ${port}`);
+  return app;
 }
 
-bootstrap();
+bootstrap().then((app) => {
+  Logger.log(`🚀 Analytic is dad running on ${app.getUrl()}`);
+});

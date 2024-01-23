@@ -1,4 +1,10 @@
-import { SwaggerOptions, USER_DEFAULT_PORT, USER_PORT, commonMiddleware, swagger } from '@edd/common';
+import {
+  SwaggerOptions,
+  USER_DEFAULT_PORT,
+  USER_PORT,
+  commonMiddleware,
+  swagger,
+} from '@edd/common';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';

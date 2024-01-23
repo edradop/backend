@@ -22,7 +22,11 @@ export class CreateUserDto {
   @PasswordValidation()
   readonly password!: string;
 
-  @ApiProperty({ example: 'johnsmith1234567890', description: 'Username of the user' })
+  @ApiProperty({
+    nullable: true,
+    example: 'johnsmith1234567890',
+    description: 'Username of the user',
+  })
   @UsernameValidation()
   username?: string;
 }

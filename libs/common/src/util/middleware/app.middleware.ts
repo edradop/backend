@@ -8,6 +8,7 @@ export function commonMiddleware(app: INestApplication): INestApplication {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
     }),
   );
   app.use(compression());

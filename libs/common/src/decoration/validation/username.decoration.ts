@@ -9,6 +9,7 @@ export function UsernameValidation(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
+          if (!value) return true;
           return /^[a-zA-Z0-9_-]{5,20}$/.test(value);
         },
         defaultMessage() {
