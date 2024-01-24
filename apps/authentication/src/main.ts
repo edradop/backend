@@ -20,7 +20,7 @@ const swaggerOptions: SwaggerOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(AuthenticationModule);
   const config = app.get(ConfigService);
-  const port = config.get(AUTHENTICATION) || AUTHENTICATION_DEFAULT_PORT;
+  const port = config.get(AUTHENTICATION, AUTHENTICATION_DEFAULT_PORT);
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);

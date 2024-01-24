@@ -12,7 +12,7 @@ export class TokenService {
   private readonly authenticationServiceUrl!: string;
 
   constructor(private readonly configService: ConfigService) {
-    const port = this.configService.get<number>(AUTHENTICATION) || AUTHENTICATION_DEFAULT_PORT;
+    const port = this.configService.get<number>(AUTHENTICATION, AUTHENTICATION_DEFAULT_PORT);
     this.authenticationServiceUrl = `${AUTHENTICATION_DEFAULT_HOST}:${port}`;
   }
 

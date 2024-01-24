@@ -7,7 +7,7 @@ import { StorageModule } from './storage.module';
 async function bootstrap() {
   const app = await NestFactory.create(StorageModule);
   const config = app.get(ConfigService);
-  const port = config.get(STORAGE) || STORAGE_DEFAULT_PORT;
+  const port = config.get(STORAGE, STORAGE_DEFAULT_PORT);
 
   await app.listen(port);
 

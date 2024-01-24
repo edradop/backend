@@ -20,7 +20,7 @@ const swaggerOptions: SwaggerOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
-  const port = config.get(USER_PORT) || USER_DEFAULT_PORT;
+  const port = config.get(USER_PORT, USER_DEFAULT_PORT);
 
   swagger(app, swaggerOptions);
   commonMiddleware(app);
@@ -28,7 +28,9 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  Logger.log(`🚀 User is running on ${port}`);
+  return app;
 }
 
-bootstrap();
+bootstrap().then(async (app) => {
+  Logger.log(`🚀 User is running on ${await app.getUrl()}`);
+});

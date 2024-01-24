@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AnalyticModule);
   const config = app.get(ConfigService);
-  const port = config.get(ANALYTIC) || ANALYTIC_DEFAULT_PORT;
+  const port = config.get(ANALYTIC, ANALYTIC_DEFAULT_PORT);
 
   await app.listen(port);
   return app;

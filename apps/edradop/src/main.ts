@@ -16,7 +16,7 @@ const swaggerOptions: SwaggerOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(EdradopModule, { cors: true });
   const config = app.get(ConfigService);
-  const port = config.get(EDRADOP) || EDRADOP_DEFAULT_PORT;
+  const port = config.get(EDRADOP, EDRADOP_DEFAULT_PORT);
 
   app.use(helmet());
   app.use(cookieParser());

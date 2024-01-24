@@ -5,3 +5,5 @@ export * from './entity/email.entity';
 export * from './entity/password.entity';
 export * from './entity/username.entity';
 export * from './enum/user-type.enum';
+export * from './entity/authority.entity';
+export * from './entity/role.entity';

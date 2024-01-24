@@ -1,4 +1,4 @@
-import { PasswordValidation } from '@edd/common';
+import { PasswordValidation } from '@edd/common/decoration';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 

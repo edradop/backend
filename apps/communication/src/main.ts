@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(CommunicationModule);
   const config = app.get(ConfigService);
-  const port = config.get(COMMUNICATION) || COMMUNICATION_DEFAULT_PORT;
+  const port = config.get(COMMUNICATION, COMMUNICATION_DEFAULT_PORT);
 
   await app.listen(port);
 

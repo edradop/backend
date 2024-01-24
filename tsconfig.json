@@ -23,13 +23,59 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./libs/common/src/type/express"
+    ],
     "paths": {
+      "@edd/analytic": [
+        "libs/analytic/src"
+      ],
+      "@edd/analytic/*": [
+        "libs/analytic/src/*"
+      ],
+      "@edd/authentication": [
+        "libs/authentication/src"
+      ],
+      "@edd/authentication/*": [
+        "libs/authentication/src/*"
+      ],
       "@edd/common": [
         "libs/common/src"
       ],
       "@edd/common/*": [
         "libs/common/src/*"
+      ],
+      "@edd/communication": [
+        "libs/communication/src"
+      ],
+      "@edd/communication/*": [
+        "libs/communication/src/*"
+      ],
+      "@edd/edradop": [
+        "libs/edradop/src"
+      ],
+      "@edd/edradop/*": [
+        "libs/edradop/src/*"
+      ],
+      "@edd/payment": [
+        "libs/payment/src"
+      ],
+      "@edd/payment/*": [
+        "libs/payment/src/*"
+      ],
+      "@edd/storage": [
+        "libs/storage/src"
+      ],
+      "@edd/storage/*": [
+        "libs/storage/src/*"
+      ],
+      "@edd/user": [
+        "libs/user/src"
+      ],
+      "@edd/user/*": [
+        "libs/user/src/*"
       ]
-    }
+    },
   }
 }

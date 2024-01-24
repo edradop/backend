@@ -10,7 +10,7 @@ export function middleware(app: INestApplication): INestApplication {
   app.use(
     session({
       // Requires 'store' setup for production
-      secret: config.get(SESSION_SECRET) || SESSION_SECRET_DEFAULT,
+      secret: config.get(SESSION_SECRET, SESSION_SECRET_DEFAULT),
       resave: false,
       saveUninitialized: true,
       cookie: { secure: isProduction },

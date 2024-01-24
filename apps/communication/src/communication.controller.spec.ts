@@ -16,7 +16,7 @@ describe('CommunicationController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(communicationController.getHello()).toBe('Hello World!');
+      expect(communicationController.getData()).toBe('Hello World!');
     });
   });
 });

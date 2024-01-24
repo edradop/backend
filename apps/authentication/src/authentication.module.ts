@@ -2,16 +2,14 @@ import { JWT_SECRET, UserModule } from '@edd/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { AuthenticationController } from './controller';
 import { AuthenticationService } from './service';
-import { JwtStrategy } from './strategy';
-import { APP_GUARD } from './guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthenticationGuard } from './guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    PassportModule,
     JwtModule.register({
       secret: JWT_SECRET,
       signOptions: { expiresIn: '1h' },
@@ -19,6 +17,12 @@ import { APP_GUARD } from './guard';
     UserModule,
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, JwtStrategy, APP_GUARD],
+  providers: [
+    AuthenticationService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthenticationGuard,
+    },
+  ],
 })
 export class AuthenticationModule {}
