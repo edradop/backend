@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { EdradopController } from './edradop.controller';
-import { EdradopService } from './edradop.service';
+import { EdradopController } from './controller';
+import { EdradopService } from './service';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CommunicationController } from './communication.controller';
-import { CommunicationService } from './communication.service';
+import { CommunicationController } from './controller';
+import { CommunicationService } from './service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

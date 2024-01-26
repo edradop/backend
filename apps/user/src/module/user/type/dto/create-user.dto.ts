@@ -3,6 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PasswordValidation, UsernameValidation } from '@edd/common';
 
 export class CreateUserDto {
+  id!: string;
+
   @ApiProperty({ example: 'John', description: 'First name of the user' })
   @IsNotEmpty()
   @Length(3, 50)

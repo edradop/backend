@@ -2,7 +2,6 @@ import { SESSION_SECRET, SESSION_SECRET_DEFAULT } from '@edd/common';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as session from 'express-session';
-import * as passport from 'passport';
 
 export function middleware(app: INestApplication): INestApplication {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -16,7 +15,5 @@ export function middleware(app: INestApplication): INestApplication {
       cookie: { secure: isProduction },
     }),
   );
-  app.use(passport.initialize());
-  app.use(passport.session());
   return app;
 }

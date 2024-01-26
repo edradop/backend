@@ -1,10 +1,13 @@
-import { EDRADOP, EDRADOP_DEFAULT_PORT, SwaggerOptions, swagger } from '@edd/common';
-import { Logger, VersioningType } from '@nestjs/common';
+import {
+  EDRADOP,
+  EDRADOP_DEFAULT_PORT,
+  SwaggerOptions,
+  commonMiddleware,
+  swagger,
+} from '@edd/common';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
-import * as csurf from 'csurf';
-import helmet from 'helmet';
 import { EdradopModule } from './edradop.module';
 
 const swaggerOptions: SwaggerOptions = {
@@ -18,14 +21,8 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   const port = config.get(EDRADOP, EDRADOP_DEFAULT_PORT);
 
-  app.use(helmet());
-  app.use(cookieParser());
-  app.use(csurf());
-  app.enableVersioning({
-    type: VersioningType.URI,
-  });
-
   swagger(app, swaggerOptions);
+  commonMiddleware(app);
 
   await app.listen(port);
 

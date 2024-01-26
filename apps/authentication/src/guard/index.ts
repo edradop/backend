@@ -1,2 +1,3 @@
 export * from './jwt-authentication.guard';
-export * from './role/role.guard';
+export * from './jwt-verify-authentication.guard';
+export * from './role.guard';

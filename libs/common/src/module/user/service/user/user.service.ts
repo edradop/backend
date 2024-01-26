@@ -1,5 +1,6 @@
-import { USER_PORT, USER_DEFAULT_PORT, USER_DEFAULT_HOST } from '@edd/common/constant';
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { USER_DEFAULT_HOST, USER_DEFAULT_PORT, USER_PORT } from '@edd/common/constant';
+import { HttpExceptionService } from '@edd/common/module/http-exception';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
@@ -7,7 +8,10 @@ import axios from 'axios';
 export class UserService {
   private readonly userServiceUrl!: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpExceptionService: HttpExceptionService,
+  ) {
     const port = this.configService.get<number>(USER_PORT, USER_DEFAULT_PORT);
     this.userServiceUrl = `http://${USER_DEFAULT_HOST}:${port}`;
   }
@@ -21,15 +25,13 @@ export class UserService {
       return response.data;
     } catch (error) {
       // Handle the error appropriately
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'something bad happened',
-        },
+      throw this.httpExceptionService.exception(
         HttpStatus.BAD_REQUEST,
         {
-          cause: error,
+          titleKey: 'user.byEmailPassword.error.title',
+          messageKey: 'user.byEmailPassword.error.message',
         },
+        error as string,
       );
     }
   }
@@ -42,10 +44,14 @@ export class UserService {
       return response.data;
     } catch (error) {
       // Handle the error appropriately
-      throw new BadRequestException('Something bad happened', {
-        cause: new Error(),
-        description: 'Some error description',
-      });
+      throw this.httpExceptionService.exception(
+        HttpStatus.BAD_REQUEST,
+        {
+          titleKey: 'user.byUsernamePassword.error.title',
+          messageKey: 'user.byUsernamePassword.error.message',
+        },
+        error as string,
+      );
     }
   }
   async validateUserById(id: string): Promise<any> {
@@ -54,10 +60,14 @@ export class UserService {
       return response.data;
     } catch (error) {
       // Handle the error appropriately
-      throw new BadRequestException('Something bad happened', {
-        cause: new Error(),
-        description: 'Some error description',
-      });
+      throw this.httpExceptionService.exception(
+        HttpStatus.BAD_REQUEST,
+        {
+          titleKey: 'user.byId.error.title',
+          messageKey: 'user.byId.error.message',
+        },
+        error as string,
+      );
     }
   }
 }
