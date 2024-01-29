@@ -1,13 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { UserService } from '../service';
-import { CreateUserDto, User } from '../type';
+import { Public } from '@edd/common';
 import {
   EmailPasswordDto,
   SignUpDto,
   UsernamePasswordDto,
 } from '@edd/common/module/authentication';
-import { Public } from '@edd/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { User } from '../export';
+import { UserService } from '../service';
+import { CreateUserDto } from '../type';
 
 @ApiTags('user')
 @Controller({ path: 'user', version: '1' })

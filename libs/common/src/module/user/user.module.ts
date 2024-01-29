@@ -1,10 +1,10 @@
+import { PortModule } from '@edd/config/module/port';
 import { Module } from '@nestjs/common';
 import { UserService } from '.';
-import { ConfigModule } from '@nestjs/config';
 import { HttpExceptionModule } from '../http-exception';
 
 @Module({
-  imports: [ConfigModule, HttpExceptionModule],
+  imports: [PortModule, HttpExceptionModule],
   providers: [UserService],
   exports: [UserService],
 })

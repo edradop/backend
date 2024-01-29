@@ -1,22 +1,18 @@
-import {
-  AUTHENTICATION,
-  AUTHENTICATION_DEFAULT_HOST,
-  AUTHENTICATION_DEFAULT_PORT,
-} from '@edd/common';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { HttpExceptionService } from '../../http-exception';
+import { PortService } from '@edd/config/module/port';
+import { AUTHENTICATION_DEFAULT_HOST } from '@edd/config';
 
 @Injectable()
 export class AuthenticationService {
   private readonly authenticationServiceUrl!: string;
 
   constructor(
-    private readonly configService: ConfigService,
+    private readonly portService: PortService,
     private readonly httpExceptionService: HttpExceptionService,
   ) {
-    const port = this.configService.get<number>(AUTHENTICATION, AUTHENTICATION_DEFAULT_PORT);
+    const port = this.portService.authenticationPort;
     this.authenticationServiceUrl = `${AUTHENTICATION_DEFAULT_HOST}:${port}`;
   }
 

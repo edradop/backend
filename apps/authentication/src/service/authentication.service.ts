@@ -1,9 +1,9 @@
-import { JWT_REFRESH_SECRET, JWT_SECRET } from '@edd/common';
+import { SignUpDto } from '@edd/common/module/authentication';
 import { TUser, UserService } from '@edd/common/module/user';
+import { JWT_REFRESH_SECRET, JWT_SECRET } from '@edd/config';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from '../type';
-import { SignUpDto } from '@edd/common/module/authentication';
 
 @Injectable()
 export class AuthenticationService {

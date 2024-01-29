@@ -1,15 +1,14 @@
-import { SESSION_SECRET, SESSION_SECRET_DEFAULT } from '@edd/common';
+import { PortService } from '@edd/config/module/port';
 import { INestApplication } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as session from 'express-session';
 
 export function middleware(app: INestApplication): INestApplication {
   const isProduction = process.env.NODE_ENV === 'production';
-  const config = app.get(ConfigService);
+  const portService = app.get(PortService);
   app.use(
     session({
       // Requires 'store' setup for production
-      secret: config.get(SESSION_SECRET, SESSION_SECRET_DEFAULT),
+      secret: portService.sessionSecret,
       resave: false,
       saveUninitialized: true,
       cookie: { secure: isProduction },

@@ -1,13 +1,13 @@
+import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import { Module } from '@nestjs/common';
-import { RoleService } from './service';
 import { RoleController } from './controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Role } from './type';
+import { RoleExportModule } from './export';
+import { RoleService } from './service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role])],
+  imports: [RoleExportModule, HttpExceptionModule],
   controllers: [RoleController],
   providers: [RoleService],
-  exports: [TypeOrmModule],
+  exports: [],
 })
 export class RoleModule {}

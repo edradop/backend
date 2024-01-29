@@ -1,15 +1,10 @@
-import {
-  SwaggerOptions,
-  USER_DEFAULT_PORT,
-  USER_PORT,
-  commonMiddleware,
-  swagger,
-} from '@edd/common';
+import { commonMiddleware } from '@edd/common';
+import { SwaggerOptions, swagger } from '@edd/config';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { middleware } from './util';
+import { middleware } from './middleware';
+import { PortService } from '@edd/config/module/port';
 
 const swaggerOptions: SwaggerOptions = {
   title: 'User API',
@@ -19,8 +14,8 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const config = app.get(ConfigService);
-  const port = config.get(USER_PORT, USER_DEFAULT_PORT);
+  const portService = app.get(PortService);
+  const port = portService.userPort;
 
   commonMiddleware(app);
   middleware(app);

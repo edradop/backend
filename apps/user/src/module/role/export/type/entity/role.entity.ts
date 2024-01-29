@@ -3,16 +3,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../../../role';
-import { User } from '../../../user';
+import { Authority } from '../../../../authority/export';
+import { User } from '../../../../user/export';
 
 @Entity()
-class Authority {
+export class Role {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -26,15 +27,15 @@ class Authority {
   @Column({ unique: true, type: 'varchar', length: 50 })
   code!: string;
 
-  // Optional: Direct relationship with User
-  @ManyToMany(() => User, (user) => user.authorities)
-  users?: User[];
+  @ManyToMany(() => User, (user) => user.roles)
+  users!: User[];
 
-  @ManyToOne(() => User, (user) => user.ownAuthorities)
+  @ManyToOne(() => User, (user) => user.ownRoles)
   owner!: User;
 
-  @ManyToMany(() => Role, (role) => role.authorities)
-  roles!: Role[];
+  @ManyToMany(() => Authority, (authority) => authority.roles)
+  @JoinTable()
+  authorities!: Authority[];
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -42,5 +43,3 @@ class Authority {
   @UpdateDateColumn()
   updatedAt!: Date;
 }
-
-export { Authority };

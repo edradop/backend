@@ -1,5 +1,5 @@
-import { IS_PUBLIC_KEY, JWT_SECRET } from '@edd/common';
 import { HttpExceptionService } from '@edd/common/module/http-exception';
+import { IS_PUBLIC_KEY, JWT_SECRET } from '@edd/config';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';

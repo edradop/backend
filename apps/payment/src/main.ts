@@ -1,14 +1,9 @@
-import {
-  PAYMENT,
-  PAYMENT_DEFAULT_PORT,
-  SwaggerOptions,
-  commonMiddleware,
-  swagger,
-} from '@edd/common';
+import { commonMiddleware } from '@edd/common';
+import { SwaggerOptions, swagger } from '@edd/config';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { PaymentModule } from './payment.module';
+import { PortService } from '@edd/config/module/port';
 
 const swaggerOptions: SwaggerOptions = {
   title: 'Edradop API',
@@ -18,15 +13,17 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(PaymentModule);
-  const config = app.get(ConfigService);
-  const port = config.get(PAYMENT, PAYMENT_DEFAULT_PORT);
+  const portService = app.get(PortService);
+  const port = portService.paymentPort;
 
   swagger(app, swaggerOptions);
   commonMiddleware(app);
 
   await app.listen(port);
 
-  Logger.log(`🚀 Payment is running on ${port}`);
+  return app;
 }
 
-bootstrap();
+bootstrap().then(async (app) => {
+  Logger.log(`🚀 Payment is running on ${await app.getUrl()}`);
+});

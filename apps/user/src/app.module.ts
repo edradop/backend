@@ -1,23 +1,25 @@
+import { registerJwtModule } from '@edd/common';
+import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
+import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import {
   POSTGRES_DATABASE,
   POSTGRES_HOST,
   POSTGRES_PASSWORD,
   POSTGRES_PORT,
   POSTGRES_USER,
-  registerJwtModule,
-} from '@edd/common';
-import { HttpExceptionModule } from '@edd/common/module/http-exception';
+} from '@edd/config';
+import { PortModule } from '@edd/config/module/port';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorityModule } from './module/authority';
 import { RoleModule } from './module/role';
 import { UserModule } from './module/user';
-import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    PortModule,
     HttpExceptionModule,
     registerJwtModule(),
     typeOrm(),

@@ -29,16 +29,16 @@
     ],
     "paths": {
       "@edd/analytic": [
-        "libs/analytic/src"
+        "apps/analytic/src"
       ],
       "@edd/analytic/*": [
-        "libs/analytic/src/*"
+        "apps/analytic/src/*"
       ],
       "@edd/authentication": [
-        "libs/authentication/src"
+        "apps/authentication/src"
       ],
       "@edd/authentication/*": [
-        "libs/authentication/src/*"
+        "apps/authentication/src/*"
       ],
       "@edd/common": [
         "libs/common/src"
@@ -47,34 +47,34 @@
         "libs/common/src/*"
       ],
       "@edd/communication": [
-        "libs/communication/src"
+        "apps/communication/src"
       ],
       "@edd/communication/*": [
-        "libs/communication/src/*"
+        "apps/communication/src/*"
       ],
       "@edd/edradop": [
-        "libs/edradop/src"
+        "apps/edradop/src"
       ],
       "@edd/edradop/*": [
-        "libs/edradop/src/*"
+        "apps/edradop/src/*"
       ],
       "@edd/payment": [
-        "libs/payment/src"
+        "apps/payment/src"
       ],
       "@edd/payment/*": [
-        "libs/payment/src/*"
+        "apps/payment/src/*"
       ],
       "@edd/storage": [
-        "libs/storage/src"
+        "apps/storage/src"
       ],
       "@edd/storage/*": [
-        "libs/storage/src/*"
+        "apps/storage/src/*"
       ],
       "@edd/user": [
-        "libs/user/src"
+        "apps/user/src"
       ],
       "@edd/user/*": [
-        "libs/user/src/*"
+        "apps/user/src/*"
       ],
       "@edd/config": [
         "libs/config/src"

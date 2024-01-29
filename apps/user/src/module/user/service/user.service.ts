@@ -3,7 +3,8 @@ import { PromiseHandlerService } from '@edd/common/module/http-exception';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto, User, UserType } from '../type';
+import { CreateUserDto, UpdateUserDto, UserType } from '../type';
+import { User } from '../export';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
     // @InjectRepository(Role)
     // private readonly roleRepository: Repository<Role>,
     // @InjectRepository(Authority)
-    // private readonly authorityRepository: Repository<Authority>,
+    // private readonly authorityRepository: Repository<Authority>, // TODO: reactive
     private readonly promiseHandlerService: PromiseHandlerService,
   ) {}
 
@@ -34,7 +35,7 @@ export class UserService {
     // const authorities = await this.authorityRepository.find({
     //   where: dto.authorities.map((id) => ({ id })),
     // });
-    // user.authorities = authorities;
+    // user.authorities = authorities; // TODO: reactive
 
     await this.promiseHandlerService.conflict(this.userRepository.save(user), {
       titleKey: 'user.exists.title',

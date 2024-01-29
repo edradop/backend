@@ -1,6 +1,6 @@
-import { JWT_REFRESH_SECRET } from '@edd/common';
 import { HttpExceptionService } from '@edd/common/module/http-exception';
 import { extractTokenFromHeader } from '@edd/common/util/extractTokenFromHeader.util';
+import { JWT_REFRESH_SECRET } from '@edd/config';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 

@@ -1,13 +1,8 @@
-import { ConfigService } from '@nestjs/config';
 import { AuthenticationModule } from './authentication.module';
 
-import {
-  AUTHENTICATION,
-  AUTHENTICATION_DEFAULT_PORT,
-  SwaggerOptions,
-  commonMiddleware,
-  swagger,
-} from '@edd/common';
+import { commonMiddleware } from '@edd/common';
+import { SwaggerOptions, swagger } from '@edd/config';
+import { PortService } from '@edd/config/module/port';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -19,8 +14,8 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthenticationModule);
-  const config = app.get(ConfigService);
-  const port = config.get(AUTHENTICATION, AUTHENTICATION_DEFAULT_PORT);
+  const portService = app.get(PortService);
+  const port = portService.authenticationPort;
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);

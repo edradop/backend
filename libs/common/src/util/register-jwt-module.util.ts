@@ -1,6 +1,6 @@
 import { JwtModule } from '@nestjs/jwt';
-import { JWT_SECRET } from '../constant';
 import { DynamicModule } from '@nestjs/common';
+import { JWT_SECRET } from '@edd/config';
 
 const registerJwtModule = (): DynamicModule => {
   return JwtModule.register({

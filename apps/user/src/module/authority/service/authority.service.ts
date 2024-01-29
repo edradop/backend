@@ -1,16 +1,19 @@
+import { HttpExceptionService } from '@edd/common/module/http-exception';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { Authority, CreateAuthorityDto, UpdateAuthorityDto } from '../type';
+import { Role } from '../../role/export';
+import { Authority } from '../export';
+import { CreateAuthorityDto, UpdateAuthorityDto } from '../type';
 
 @Injectable()
 export class AuthorityService {
   constructor(
     @InjectRepository(Authority)
     private readonly authorityRepository: Repository<Authority>,
-    // @InjectRepository(Role)
-    // private readonly roleRepository: Repository<Role>,
-    // private readonly httpExceptionService: HttpExceptionService,
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
+    private readonly httpExceptionService: HttpExceptionService,
   ) {}
 
   create(createAuthorityDto: CreateAuthorityDto) {
@@ -39,13 +42,13 @@ export class AuthorityService {
   }
 
   async remove(id: string): Promise<DeleteResult> {
-    // const found = await this.roleRepository.findOneBy({ authorities: { id: id } });
-    // if (found) {
-    //   throw this.httpExceptionService.badRequest({
-    //     titleKey: 'authority.cannotDelete.title',
-    //     messageKey: 'authority.cannotDelete.message',
-    //   });
-    // }
+    const found = await this.roleRepository.findOneBy({ authorities: { id: id } });
+    if (found) {
+      throw this.httpExceptionService.badRequest({
+        titleKey: 'authority.cannotDelete.title',
+        messageKey: 'authority.cannotDelete.message',
+      });
+    }
     return this.authorityRepository.delete(id);
   }
 }

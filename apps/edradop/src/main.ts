@@ -1,12 +1,7 @@
-import {
-  EDRADOP,
-  EDRADOP_DEFAULT_PORT,
-  SwaggerOptions,
-  commonMiddleware,
-  swagger,
-} from '@edd/common';
+import { commonMiddleware } from '@edd/common';
+import { SwaggerOptions, swagger } from '@edd/config';
+import { PortService } from '@edd/config/module/port';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { EdradopModule } from './edradop.module';
 
@@ -18,14 +13,16 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(EdradopModule, { cors: true });
-  const config = app.get(ConfigService);
-  const port = config.get(EDRADOP, EDRADOP_DEFAULT_PORT);
+  const portService = app.get(PortService);
+  const port = portService.edradopPort;
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);
 
   await app.listen(port);
 
-  Logger.log(`🚀 Application is running on ${port}`);
+  return app;
 }
-bootstrap();
+bootstrap().then(async (app) => {
+  Logger.log(`🚀 Application is running on ${await app.getUrl()}`);
+});
