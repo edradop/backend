@@ -3,9 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '../../../role';
+import { User } from '../../../user';
 
 @Entity()
 class Authority {
@@ -21,6 +25,16 @@ class Authority {
   @IsNotEmpty()
   @Column({ unique: true, type: 'varchar', length: 50 })
   code!: string;
+
+  // Optional: Direct relationship with User
+  @ManyToMany(() => User, (user) => user.authorities)
+  users?: User[];
+
+  @ManyToOne(() => User, (user) => user.ownAuthorities)
+  owner!: User;
+
+  @ManyToMany(() => Role, (role) => role.authorities)
+  roles!: Role[];
 
   @CreateDateColumn()
   createdAt!: Date;

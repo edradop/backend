@@ -1,12 +1,16 @@
 import { Public, RequestUser } from '@edd/common';
-import { EmailPasswordDto, UsernamePasswordDto } from '@edd/common/module/token';
+import { HttpExceptionService } from '@edd/common/module/http-exception';
+import {
+  EmailPasswordDto,
+  SignUpDto,
+  UsernamePasswordDto,
+} from '@edd/common/module/authentication';
 import { TUser } from '@edd/common/module/user';
-import { Body, Controller, Get, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { JwtRefreshAuthenticationGuard } from '../guard';
 import { AuthenticationService } from '../service';
 import { LoginResponse } from '../type';
-import { HttpExceptionService } from '@edd/common/module/http-exception';
-import { JwtVerifyAuthenticationGuard } from '../guard';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('authentication')
 @Controller({ path: 'authentication', version: '1' })
@@ -21,16 +25,21 @@ export class AuthenticationController {
   login(@Body() { email, password }: EmailPasswordDto): Promise<LoginResponse | null> {
     return this.authenticationService.loginWithEmail(email, password);
   }
+  @Public()
+  @Post('signup')
+  signUp(@Body() dto: SignUpDto): Promise<LoginResponse | null> {
+    return this.authenticationService.signUpWithEmail(dto);
+  }
 
   @Public()
-  @UseGuards(JwtVerifyAuthenticationGuard)
+  @UseGuards(JwtRefreshAuthenticationGuard)
   @Post('refresh-token')
   refreshToken(@Req() req: { user: TUser }): Promise<LoginResponse | null> {
     const { user } = req;
     if (!user) {
-      throw this.httpExceptionService.exception(HttpStatus.NOT_FOUND, {
-        titleKey: 'user.notFound.error.title',
-        messageKey: 'user.notFound.error.message',
+      throw this.httpExceptionService.notFound({
+        titleKey: 'user.notFound.title',
+        messageKey: 'user.notFound.message',
       });
     }
     return this.authenticationService.refreshToken(user as TUser);

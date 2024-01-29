@@ -4,11 +4,11 @@ import { AuthorityService } from './service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Authority } from './type';
 import { HttpExceptionModule } from '@edd/common/module/http-exception';
-import { Role } from '../role';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role, Authority]), HttpExceptionModule],
+  imports: [TypeOrmModule.forFeature([Authority]), HttpExceptionModule],
   controllers: [AuthorityController],
   providers: [AuthorityService],
+  exports: [TypeOrmModule],
 })
 export class AuthorityModule {}

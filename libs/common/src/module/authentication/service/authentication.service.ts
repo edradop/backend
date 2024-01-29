@@ -3,13 +3,13 @@ import {
   AUTHENTICATION_DEFAULT_HOST,
   AUTHENTICATION_DEFAULT_PORT,
 } from '@edd/common';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { HttpExceptionService } from '../../http-exception';
 
 @Injectable()
-export class TokenService {
+export class AuthenticationService {
   private readonly authenticationServiceUrl!: string;
 
   constructor(
@@ -30,11 +30,10 @@ export class TokenService {
       return response.data;
     } catch (error) {
       // Handle the error appropriately
-      throw this.httpExceptionService.exception(
-        HttpStatus.BAD_REQUEST,
+      throw this.httpExceptionService.badRequest(
         {
-          titleKey: 'authentication.validate.error.title',
-          messageKey: 'authentication.validate.error.message',
+          titleKey: 'authentication.validate.title',
+          messageKey: 'authentication.validate.message',
         },
         error as string,
       );

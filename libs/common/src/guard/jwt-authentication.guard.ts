@@ -1,39 +1,45 @@
-import { JWT_REFRESH_SECRET } from '@edd/common';
+import { IS_PUBLIC_KEY, JWT_SECRET } from '@edd/common';
 import { HttpExceptionService } from '@edd/common/module/http-exception';
-import { CanActivate, ExecutionContext, HttpStatus, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 @Injectable()
-export class JwtVerifyAuthenticationGuard implements CanActivate {
+export class JwtAuthenticationGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
+    private reflector: Reflector,
     private readonly httpExceptionService: HttpExceptionService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      return true;
+    }
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw this.httpExceptionService.exception(HttpStatus.UNAUTHORIZED, {
-        titleKey: 'jwtVerify.Unauthorized.error.title',
-        messageKey: 'jwtVerify.Unauthorized.error.message',
+      throw this.httpExceptionService.unauthorized({
+        titleKey: 'jwt.Unauthorized.title',
+        messageKey: 'jwt.Unauthorized.message',
       });
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: JWT_REFRESH_SECRET,
+        secret: JWT_SECRET,
       });
-
-      delete payload.iat;
-      delete payload.exp;
       request['user'] = payload;
     } catch (error) {
-      this.httpExceptionService.exception(
-        HttpStatus.UNAUTHORIZED,
+      throw this.httpExceptionService.unauthorized(
         {
-          titleKey: 'jwtVerify.UnExpected.error.title',
-          messageKey: 'jwtVerify.UnExpected.error.message',
+          titleKey: 'jwt.UnExpected.title',
+          messageKey: 'jwt.UnExpected.message',
         },
         error as string,
       );

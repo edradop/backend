@@ -15,7 +15,7 @@ export class CreateRoleDto {
 
   @IsArray()
   @ApiProperty({
-    example: ['17104274-4b5e-4377-918f-751b4a636de1'],
+    example: [''],
     description: 'Code of the role',
   })
   authorities!: string[];

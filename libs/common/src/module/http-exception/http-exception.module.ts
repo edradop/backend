@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HttpExceptionService } from './service/http-exception.service';
+import { HttpExceptionService, PromiseHandlerService, DbExceptionHandlerService } from './service';
 
 @Module({
-  providers: [HttpExceptionService],
-  exports: [HttpExceptionService],
+  providers: [HttpExceptionService, PromiseHandlerService, DbExceptionHandlerService],
+  exports: [HttpExceptionService, PromiseHandlerService, DbExceptionHandlerService],
 })
 export class HttpExceptionModule {}

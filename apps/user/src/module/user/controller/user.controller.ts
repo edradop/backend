@@ -2,7 +2,12 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from '../service';
 import { CreateUserDto, User } from '../type';
-import { EmailPasswordDto, UsernamePasswordDto } from '@edd/common/module/token';
+import {
+  EmailPasswordDto,
+  SignUpDto,
+  UsernamePasswordDto,
+} from '@edd/common/module/authentication';
+import { Public } from '@edd/common';
 
 @ApiTags('user')
 @Controller({ path: 'user', version: '1' })
@@ -12,6 +17,12 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
+  }
+
+  @Public()
+  @Post()
+  signUp(@Body() user: SignUpDto): Promise<User> {
+    return this.userService.signUp(user);
   }
 
   @Get()

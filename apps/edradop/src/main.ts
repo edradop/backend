@@ -21,8 +21,8 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   const port = config.get(EDRADOP, EDRADOP_DEFAULT_PORT);
 
-  swagger(app, swaggerOptions);
   commonMiddleware(app);
+  swagger(app, swaggerOptions);
 
   await app.listen(port);
 

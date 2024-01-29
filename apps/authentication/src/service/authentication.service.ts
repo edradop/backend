@@ -3,6 +3,7 @@ import { TUser, UserService } from '@edd/common/module/user';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from '../type';
+import { SignUpDto } from '@edd/common/module/authentication';
 
 @Injectable()
 export class AuthenticationService {
@@ -12,6 +13,14 @@ export class AuthenticationService {
   ) {}
   async loginWithEmail(email: string, password: string): Promise<LoginResponse | null> {
     const user = await this.usersService.validateUserWithEmail(email, password);
+    if (user) {
+      return { user, ...(await this.generateToken(user)) };
+    }
+    return null;
+  }
+
+  async signUpWithEmail(dto: SignUpDto): Promise<LoginResponse | null> {
+    const user = await this.usersService.signUpWithEmail(dto);
     if (user) {
       return { user, ...(await this.generateToken(user)) };
     }

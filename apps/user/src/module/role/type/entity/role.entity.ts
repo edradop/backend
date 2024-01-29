@@ -1,6 +1,16 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Authority } from '../../../authority/type/entity/authority.entity';
 import { IsNotEmpty, Length } from 'class-validator';
+import { User } from '../../../user';
 
 @Entity()
 export class Role {
@@ -17,7 +27,19 @@ export class Role {
   @Column({ unique: true, type: 'varchar', length: 50 })
   code!: string;
 
-  @ManyToMany(() => Authority)
+  @ManyToMany(() => User, (user) => user.roles)
+  users!: User[];
+
+  @ManyToOne(() => User, (user) => user.ownRoles)
+  owner!: User;
+
+  @ManyToMany(() => Authority, (authority) => authority.roles)
   @JoinTable()
   authorities!: Authority[];
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

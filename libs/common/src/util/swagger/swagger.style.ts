@@ -27,4 +27,4 @@ const swaggerStyle = `
     }
 `;
 
-export {swaggerStyle};
+export { swaggerStyle };
