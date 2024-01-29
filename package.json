@@ -112,7 +112,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@edd/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@edd/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@edd/config(|/.*)$": "<rootDir>/libs/config/src/$1"
     }
   }
 }

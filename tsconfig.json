@@ -75,7 +75,13 @@
       ],
       "@edd/user/*": [
         "libs/user/src/*"
+      ],
+      "@edd/config": [
+        "libs/config/src"
+      ],
+      "@edd/config/*": [
+        "libs/config/src/*"
       ]
-    },
+    }
   }
 }
