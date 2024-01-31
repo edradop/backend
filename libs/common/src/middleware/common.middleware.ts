@@ -3,7 +3,7 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
-export function commonMiddleware(app: INestApplication): INestApplication {
+function commonMiddleware(app: INestApplication): INestApplication {
   const isProduction = process.env.NODE_ENV === 'production';
 
   app.use(cookieParser());
@@ -30,3 +30,5 @@ export function commonMiddleware(app: INestApplication): INestApplication {
 
   return app;
 }
+
+export { commonMiddleware };

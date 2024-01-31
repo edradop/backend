@@ -20,6 +20,11 @@ export const POSTGRES_PORT = 'POSTGRES_PORT';
 export const POSTGRES_USER = 'POSTGRES_USER';
 export const POSTGRES_PASSWORD = 'POSTGRES_PASSWORD';
 export const POSTGRES_DATABASE = 'POSTGRES_DATABASE';
+export const MINIO_ENDPOINT = 'MINIO_ENDPOINT';
+export const MINIO_PORT = 'MINIO_PORT';
+export const MINIO_USE_SSL = 'MINIO_USE_SSL';
+export const MINIO_ACCESS_KEY = 'MINIO_ACCESS_KEY';
+export const MINIO_SECRET_KEY = 'MINIO_SECRET_KEY';
 
-export const IS_PUBLIC = 'IS_PUBLIC';
+export const IS_PUBLIC = 'IS_PUBLIC_KEY';
 export const AUTHORITY = 'AUTHORITY';

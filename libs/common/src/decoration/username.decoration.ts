@@ -1,6 +1,6 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
-export function UsernameValidation(validationOptions?: ValidationOptions) {
+function UsernameValidation(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       name: 'UsernameValidation',
@@ -19,3 +19,5 @@ export function UsernameValidation(validationOptions?: ValidationOptions) {
     });
   };
 }
+
+export { UsernameValidation };

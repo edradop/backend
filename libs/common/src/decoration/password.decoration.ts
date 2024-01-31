@@ -1,7 +1,7 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 import { PASSWORD_REGEXP } from '../constant';
 
-export function PasswordValidation(validationOptions?: ValidationOptions) {
+function PasswordValidation(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       name: 'PasswordValidation',
@@ -19,3 +19,5 @@ export function PasswordValidation(validationOptions?: ValidationOptions) {
     });
   };
 }
+
+export { PasswordValidation };

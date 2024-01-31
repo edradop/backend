@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User } from '../../export/type/entity/user.entity';
+import { User } from '../export/type/user.entity';
 import { PasswordValidation } from '@edd/common';
 
 @Entity()

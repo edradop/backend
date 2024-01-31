@@ -20,3 +20,11 @@ export const POSTGRES_DEFAULT_PORT = 5432;
 export const POSTGRES_DEFAULT_USER = 'postgres';
 export const POSTGRES_DEFAULT_PASSWORD = 'mysecretpassword';
 export const POSTGRES_DEFAULT_DATABASE = 'my_database';
+export const MINIO_DEFAULT_ENDPOINT = '127.0.0.1';
+export const MINIO_DEFAULT_PORT = 9000;
+export const MINIO_DEFAULT_USE_SSL = false;
+export const MINIO_DEFAULT_ACCESS_KEY = 'Qc8llZt2ReqIM1uA4LRE';
+export const MINIO_DEFAULT_SECRET_KEY = 'kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6';
+
+// Qc8llZt2ReqIM1uA4LRE
+// kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6

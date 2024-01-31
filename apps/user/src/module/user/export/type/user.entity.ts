@@ -12,9 +12,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserType } from '../../../type';
-import { Role } from '../../../../role/export';
-import { Authority } from '../../../../authority/export';
+import { UserType } from '../../type';
+import { Role } from '../../../role/export';
+import { Authority } from '../../../authority/export';
 
 @Entity()
 export class User {

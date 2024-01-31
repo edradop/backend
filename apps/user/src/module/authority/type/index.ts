@@ -1,2 +1,2 @@
-export * from './dto/create-authority.dto';
-export * from './dto/update-authority.dto';
+export * from './create-authority.dto';
+export * from './update-authority.dto';

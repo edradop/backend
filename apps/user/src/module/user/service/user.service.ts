@@ -1,12 +1,13 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { PromiseHandlerService } from '@edd/common/module/http-exception';
+import { MinioService } from '@edd/common/module/minio/service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto, UserType } from '../type';
-import { User } from '../export';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
+import { User } from '../export';
+import { CreateUserDto, UpdateUserDto, UserType } from '../type';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     @InjectRepository(Authority)
     private readonly authorityRepository: Repository<Authority>,
     private readonly promiseHandlerService: PromiseHandlerService,
+    private readonly minioService: MinioService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -98,5 +100,14 @@ export class UserService {
 
   async remove(id: string): Promise<void> {
     await this.userRepository.update({ id }, { status: UserType.DELETED });
+  }
+
+  async listAllBuckets() {
+    try {
+      return this.minioService.client.listBuckets();
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
   }
 }

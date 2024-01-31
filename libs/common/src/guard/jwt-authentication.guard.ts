@@ -18,6 +18,9 @@ export class JwtAuthenticationGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+    const isPublicHandler = this.reflector.get<boolean>(IS_PUBLIC, context.getHandler());
+    const isPublicClass = this.reflector.get<boolean>(IS_PUBLIC, context.getClass());
+    console.log('isPublic', isPublic, isPublicHandler, isPublicClass);
 
     if (isPublic) {
       return true;

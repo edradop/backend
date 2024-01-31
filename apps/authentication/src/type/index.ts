@@ -1,1 +1,1 @@
-export * from './response/login.response';
+export * from './login.response';
