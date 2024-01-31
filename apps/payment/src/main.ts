@@ -3,7 +3,7 @@ import { SwaggerOptions, swagger } from '@edd/config';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { PaymentModule } from './payment.module';
-import { PortService } from '@edd/config/module/port';
+import { EnvironmentService } from '@edd/config/module/environment';
 
 const swaggerOptions: SwaggerOptions = {
   title: 'Edradop API',
@@ -13,7 +13,7 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(PaymentModule);
-  const portService = app.get(PortService);
+  const portService = app.get(EnvironmentService);
   const port = portService.paymentPort;
 
   swagger(app, swaggerOptions);

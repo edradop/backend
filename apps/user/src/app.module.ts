@@ -1,16 +1,9 @@
 import { registerJwtModule } from '@edd/common';
 import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
 import { HttpExceptionModule } from '@edd/common/module/http-exception';
-import {
-  POSTGRES_DATABASE,
-  POSTGRES_HOST,
-  POSTGRES_PASSWORD,
-  POSTGRES_PORT,
-  POSTGRES_USER,
-} from '@edd/config';
-import { PortModule } from '@edd/config/module/port';
+import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorityModule } from './module/authority';
 import { RoleModule } from './module/role';
@@ -19,7 +12,7 @@ import { UserModule } from './module/user';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    PortModule,
+    EnvironmentModule,
     HttpExceptionModule,
     registerJwtModule(),
     typeOrm(),
@@ -34,20 +27,20 @@ export class AppModule {}
 
 function typeOrm() {
   return TypeOrmModule.forRootAsync({
-    imports: [ConfigModule],
-    useFactory: async (configService: ConfigService) => {
+    imports: [EnvironmentModule],
+    useFactory: async (environmentService: EnvironmentService) => {
       return {
         type: 'postgres',
-        host: configService.get(POSTGRES_HOST),
-        port: configService.get(POSTGRES_PORT),
-        username: configService.get(POSTGRES_USER),
-        password: configService.get(POSTGRES_PASSWORD),
-        database: configService.get(POSTGRES_DATABASE),
+        host: environmentService.postgresHost,
+        port: environmentService.postgresPort,
+        username: environmentService.postgresUser,
+        password: environmentService.postgresPassword,
+        database: environmentService.postgresDatabase,
         entities: [],
         autoLoadEntities: true,
         synchronize: true,
       };
     },
-    inject: [ConfigService],
+    inject: [EnvironmentService],
   });
 }

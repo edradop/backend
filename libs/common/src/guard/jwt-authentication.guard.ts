@@ -1,5 +1,5 @@
 import { HttpExceptionService } from '@edd/common/module/http-exception';
-import { IS_PUBLIC_KEY, JWT_SECRET } from '@edd/config';
+import { IS_PUBLIC, JWT_DEFAULT_SECRET } from '@edd/config';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -14,7 +14,7 @@ export class JwtAuthenticationGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -32,7 +32,7 @@ export class JwtAuthenticationGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: JWT_SECRET,
+        secret: JWT_DEFAULT_SECRET,
       });
       request['user'] = payload;
     } catch (error) {

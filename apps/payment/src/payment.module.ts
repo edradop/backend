@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { PaymentController } from './controller';
 import { PaymentService } from './service';
 import { ConfigModule } from '@nestjs/config';
-import { PortModule } from '@edd/config/module/port';
+import { EnvironmentModule } from '@edd/config/module/environment';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PortModule],
+  imports: [ConfigModule.forRoot(), EnvironmentModule],
   controllers: [PaymentController],
   providers: [PaymentService],
 })

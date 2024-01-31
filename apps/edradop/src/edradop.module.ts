@@ -3,12 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { EdradopController } from './controller';
 import { EdradopService } from './service';
-import { PortModule } from '@edd/config/module/port';
+import { EnvironmentModule } from '@edd/config/module/environment';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    PortModule,
+    EnvironmentModule,
     ThrottlerModule.forRoot([
       {
         name: 'short',

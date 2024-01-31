@@ -5,16 +5,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto, UserType } from '../type';
 import { User } from '../export';
+import { Authority } from '../../authority/export';
+import { Role } from '../../role/export';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    // @InjectRepository(Role)
-    // private readonly roleRepository: Repository<Role>,
-    // @InjectRepository(Authority)
-    // private readonly authorityRepository: Repository<Authority>, // TODO: reactive
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
+    @InjectRepository(Authority)
+    private readonly authorityRepository: Repository<Authority>,
     private readonly promiseHandlerService: PromiseHandlerService,
   ) {}
 
@@ -27,15 +29,15 @@ export class UserService {
     if (dto.username) {
       user.username = dto.username;
     }
-    // const roles = await this.roleRepository.find({
-    //   where: dto.roles.map((id) => ({ id })),
-    // });
-    // user.roles = roles;
+    const roles = await this.roleRepository.find({
+      where: dto.roles.map((id) => ({ id })),
+    });
+    user.roles = roles;
 
-    // const authorities = await this.authorityRepository.find({
-    //   where: dto.authorities.map((id) => ({ id })),
-    // });
-    // user.authorities = authorities; // TODO: reactive
+    const authorities = await this.authorityRepository.find({
+      where: dto.authorities.map((id) => ({ id })),
+    });
+    user.authorities = authorities;
 
     await this.promiseHandlerService.conflict(this.userRepository.save(user), {
       titleKey: 'user.exists.title',

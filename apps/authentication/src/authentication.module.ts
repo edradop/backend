@@ -2,7 +2,7 @@ import { registerJwtModule } from '@edd/common';
 import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
 import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import { UserModule } from '@edd/common/module/user';
-import { PortModule } from '@edd/config/module/port';
+import { EnvironmentModule } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthenticationController } from './controller';
@@ -11,7 +11,7 @@ import { AuthenticationService } from './service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    PortModule,
+    EnvironmentModule,
     registerJwtModule(),
     UserModule,
     HttpExceptionModule,

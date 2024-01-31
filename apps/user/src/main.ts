@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { middleware } from './middleware';
-import { PortService } from '@edd/config/module/port';
+import { EnvironmentService } from '@edd/config/module/environment';
 
 const swaggerOptions: SwaggerOptions = {
   title: 'User API',
@@ -14,7 +14,7 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const portService = app.get(PortService);
+  const portService = app.get(EnvironmentService);
   const port = portService.userPort;
 
   commonMiddleware(app);

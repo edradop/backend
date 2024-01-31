@@ -1,6 +1,11 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { TUser, UserService } from '@edd/common/module/user';
-import { JWT_REFRESH_SECRET, JWT_SECRET } from '@edd/config';
+import {
+  JWT_REFRESH_DEFAULT_SECRET,
+  JWT_DEFAULT_SECRET,
+  JWT_DEFAULT_EXPIRES_IN,
+  JWT_REFRESH_DEFAULT_EXPIRES_IN,
+} from '@edd/config';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from '../type';
@@ -46,12 +51,12 @@ export class AuthenticationService {
       id: user.id,
     };
     const accessToken = this.jwtService.sign(data, {
-      expiresIn: '2h',
-      secret: JWT_SECRET,
+      expiresIn: JWT_DEFAULT_EXPIRES_IN,
+      secret: JWT_DEFAULT_SECRET,
     });
     const refreshToken = this.jwtService.sign(data, {
-      expiresIn: '7d',
-      secret: JWT_REFRESH_SECRET,
+      expiresIn: JWT_REFRESH_DEFAULT_EXPIRES_IN,
+      secret: JWT_REFRESH_DEFAULT_SECRET,
     });
     const decodedAccessToken = this.jwtService.decode(accessToken);
     const decodedRefreshToken = this.jwtService.decode(refreshToken);

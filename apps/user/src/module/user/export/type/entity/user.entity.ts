@@ -37,14 +37,14 @@ export class User {
   email!: string;
 
   @PasswordValidation()
-  @Column({ select: false })
-  password!: string;
+  @Column({ select: false, nullable: true })
+  password?: string;
 
   @UsernameValidation()
-  @Column()
+  @Column({ type: 'varchar', length: 20, nullable: true })
   username!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   @Length(0, 500)
   bio!: string;
 
@@ -78,7 +78,9 @@ export class User {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 21);
+    }
   }
 
   @BeforeInsert()

@@ -1,11 +1,11 @@
 import { JwtModule } from '@nestjs/jwt';
 import { DynamicModule } from '@nestjs/common';
-import { JWT_SECRET } from '@edd/config';
+import { JWT_DEFAULT_SECRET, JWT_DEFAULT_EXPIRES_IN } from '@edd/config';
 
 const registerJwtModule = (): DynamicModule => {
   return JwtModule.register({
-    secret: JWT_SECRET,
-    signOptions: { expiresIn: '1h' },
+    secret: JWT_DEFAULT_SECRET,
+    signOptions: { expiresIn: JWT_DEFAULT_EXPIRES_IN },
   });
 };
 

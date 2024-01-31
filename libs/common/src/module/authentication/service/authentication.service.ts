@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { HttpExceptionService } from '../../http-exception';
-import { PortService } from '@edd/config/module/port';
+import { EnvironmentService } from '@edd/config/module/environment';
 import { AUTHENTICATION_DEFAULT_HOST } from '@edd/config';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class AuthenticationService {
   private readonly authenticationServiceUrl!: string;
 
   constructor(
-    private readonly portService: PortService,
+    private readonly portService: EnvironmentService,
     private readonly httpExceptionService: HttpExceptionService,
   ) {
     const port = this.portService.authenticationPort;

@@ -1,6 +1,6 @@
 import { HttpExceptionService } from '@edd/common/module/http-exception';
 import { extractTokenFromHeader } from '@edd/common/util/extractTokenFromHeader.util';
-import { JWT_REFRESH_SECRET } from '@edd/config';
+import { JWT_REFRESH_DEFAULT_SECRET } from '@edd/config';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -22,7 +22,7 @@ export class JwtRefreshAuthenticationGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: JWT_REFRESH_SECRET,
+        secret: JWT_REFRESH_DEFAULT_SECRET,
       });
 
       delete payload.iat;

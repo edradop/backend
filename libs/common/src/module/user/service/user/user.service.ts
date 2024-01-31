@@ -1,6 +1,6 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { USER_DEFAULT_HOST } from '@edd/config';
-import { PortService } from '@edd/config/module/port';
+import { EnvironmentService } from '@edd/config/module/environment';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ import axios from 'axios';
 export class UserService {
   private readonly userServiceUrl!: string;
 
-  constructor(private readonly portService: PortService) {
+  constructor(private readonly portService: EnvironmentService) {
     const port = this.portService.userPort;
     this.userServiceUrl = `http://${USER_DEFAULT_HOST}:${port}`;
   }

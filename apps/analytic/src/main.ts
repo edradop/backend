@@ -2,11 +2,11 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AnalyticModule } from './analytic.module';
-import { PortService } from '@edd/config/module/port';
+import { EnvironmentService } from '@edd/config/module/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create(AnalyticModule);
-  const portService = app.get(PortService);
+  const portService = app.get(EnvironmentService);
   const port = portService.analyticPort;
 
   await app.listen(port);
