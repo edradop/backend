@@ -14,16 +14,18 @@ import {
   Param,
   ParseFilePipe,
   Post,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { User } from '../export';
 import { UserService } from '../service';
 import { CreateUserDto } from '../type';
 
 @ApiTags('user')
+@ApiBearerAuth()
 @Controller({ path: 'user', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -44,16 +46,23 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('profile-photo')
+  profilePhoto(@Req() req: { user: User }) {
+    return this.userService.getProfilePhoto(req.user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User | null> {
     return this.userService.findOne(id);
   }
 
+  @Public()
   @Post('by-email-password')
   getUserByEmailPassword(@Body() { email, password }: EmailPasswordDto): Promise<User | null> {
     return this.userService.getUserByEmailPassword(email, password);
   }
 
+  @Public()
   @Post('by-username-password')
   getUserByUsernamePassword(
     @Body() { username, password }: UsernamePasswordDto,
@@ -61,6 +70,7 @@ export class UserController {
     return this.userService.getUserByUsernamePassword(username, password);
   }
 
+  @Public()
   @Get('by-id/:id')
   getUserById(@Param('id') id: string): Promise<User | null> {
     return this.userService.findOne(id);
@@ -72,28 +82,34 @@ export class UserController {
   }
 
   @UseInterceptors(FileInterceptor('file'))
-  @Post('file/fail-validation')
+  @Post('upload-profile-photo')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        comment: { type: 'string' },
+        outletId: { type: 'integer' },
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   uploadFileAndFailValidation(
     @Body() body: unknown,
+    @Req() req: { user: User },
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 1 }),
-          new FileTypeValidator({ fileType: 'image/jpeg' }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
         ],
       }),
     )
     file: Express.Multer.File,
   ) {
-    return {
-      body,
-      file: file.buffer.toString(),
-    };
-  }
-
-  @Public()
-  @Get('list-all-buckets')
-  listAllBuckets() {
-    return this.userService.listAllBuckets();
+    return this.userService.uploadProfilePhoto(req.user, file);
   }
 }

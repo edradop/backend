@@ -14,7 +14,7 @@ export class UserService {
   }
 
   async validateUserWithEmail(email: string, password: string): Promise<any> {
-    const response = await axios.post(`${this.userServiceUrl}/user/by-email-password`, {
+    const response = await axios.post(`${this.userServiceUrl}/v1/user/by-email-password`, {
       email,
       password,
     });

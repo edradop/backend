@@ -25,6 +25,7 @@ export const MINIO_PORT = 'MINIO_PORT';
 export const MINIO_USE_SSL = 'MINIO_USE_SSL';
 export const MINIO_ACCESS_KEY = 'MINIO_ACCESS_KEY';
 export const MINIO_SECRET_KEY = 'MINIO_SECRET_KEY';
+export const USER_BUCKET_NAME = 'USER_BUCKET_NAME';
 
 export const IS_PUBLIC = 'IS_PUBLIC_KEY';
 export const AUTHORITY = 'AUTHORITY';

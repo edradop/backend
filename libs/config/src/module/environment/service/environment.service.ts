@@ -6,6 +6,7 @@ import {
   AUTHENTICATION_PORT,
   COMMUNICATION_DEFAULT_PORT,
   COMMUNICATION_PORT,
+  DEFAULT_USER_BUCKET_NAME,
   EDRADOP_DEFAULT_PORT,
   EDRADOP_PORT,
   JWT_DEFAULT_EXPIRES_IN,
@@ -48,6 +49,7 @@ import {
   SUPER_EMAIL,
   SUPER_PASSWORD,
   SUPER_USERNAME,
+  USER_BUCKET_NAME,
   USER_DEFAULT_HOST,
   USER_DEFAULT_PORT,
   USER_PORT,
@@ -166,6 +168,10 @@ export class EnvironmentService {
 
   get minioSecretKey(): string {
     return this.configService.get<string>(MINIO_SECRET_KEY, MINIO_DEFAULT_SECRET_KEY);
+  }
+
+  get userBucketName(): string {
+    return this.configService.get<string>(USER_BUCKET_NAME, DEFAULT_USER_BUCKET_NAME);
   }
 
   get<T>(key: string, defaultValue?: T): T | undefined {

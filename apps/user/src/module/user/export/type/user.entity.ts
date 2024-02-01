@@ -48,6 +48,10 @@ export class User {
   @Length(0, 500)
   bio!: string;
 
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  @Length(0, 500)
+  profilePhoto!: string;
+
   @OneToMany(() => Role, (role) => role.owner)
   ownRoles!: Role[];
 
@@ -79,7 +83,7 @@ export class User {
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
-      this.password = await bcrypt.hash(this.password, 21);
+      this.password = await bcrypt.hash(this.password, 10);
     }
   }
 

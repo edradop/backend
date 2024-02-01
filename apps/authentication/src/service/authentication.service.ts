@@ -49,6 +49,7 @@ export class AuthenticationService {
   async generateToken(user: TUser) {
     const data = {
       id: user.id,
+      profilePhoto: user.profilePhoto,
     };
     const accessToken = this.jwtService.sign(data, {
       expiresIn: JWT_DEFAULT_EXPIRES_IN,
@@ -60,8 +61,6 @@ export class AuthenticationService {
     });
     const decodedAccessToken = this.jwtService.decode(accessToken);
     const decodedRefreshToken = this.jwtService.decode(refreshToken);
-    console.log('decodedAccessToken', decodedAccessToken);
-    console.log('decodedRefreshToken', decodedRefreshToken);
     return {
       accessToken,
       refreshToken,

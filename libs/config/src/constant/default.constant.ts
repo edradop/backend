@@ -14,7 +14,7 @@ export const AUTHENTICATION_DEFAULT_HOST = 'localhost';
 export const USER_DEFAULT_HOST = 'localhost';
 export const SUPER_DEFAULT_EMAIL = 'yavuz@toneyavuz.com';
 export const SUPER_DEFAULT_USERNAME = 'yavuz';
-export const SUPER_DEFAULT_PASSWORD = 'it_should_be_so_strong_password$$231';
+export const SUPER_DEFAULT_PASSWORD = 'yourSecureP@ssw0rd';
 export const POSTGRES_DEFAULT_HOST = '127.0.0.1';
 export const POSTGRES_DEFAULT_PORT = 5432;
 export const POSTGRES_DEFAULT_USER = 'postgres';
@@ -25,6 +25,7 @@ export const MINIO_DEFAULT_PORT = 9000;
 export const MINIO_DEFAULT_USE_SSL = false;
 export const MINIO_DEFAULT_ACCESS_KEY = 'Qc8llZt2ReqIM1uA4LRE';
 export const MINIO_DEFAULT_SECRET_KEY = 'kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6';
+export const DEFAULT_USER_BUCKET_NAME = 'userbucket';
 
 // Qc8llZt2ReqIM1uA4LRE
 // kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6

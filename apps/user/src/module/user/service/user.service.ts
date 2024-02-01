@@ -1,8 +1,10 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { PromiseHandlerService } from '@edd/common/module/http-exception';
 import { MinioService } from '@edd/common/module/minio/service';
+import { EnvironmentService } from '@edd/config/module/environment';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
@@ -20,6 +22,7 @@ export class UserService {
     private readonly authorityRepository: Repository<Authority>,
     private readonly promiseHandlerService: PromiseHandlerService,
     private readonly minioService: MinioService,
+    private readonly environmentService: EnvironmentService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -90,24 +93,48 @@ export class UserService {
     return await this.findOne(id);
   }
 
-  getUserByEmailPassword(email: string, password: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ email, password });
+  async getUserByEmailPassword(email: string, password: string): Promise<User | null> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(email, password, hashedPassword);
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+    return user;
   }
 
-  getUserByUsernamePassword(username: string, password: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ username, password });
+  async getUserByUsernamePassword(username: string, password: string): Promise<User | null> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return await this.userRepository.findOneBy({ username, password: hashedPassword });
   }
 
   async remove(id: string): Promise<void> {
     await this.userRepository.update({ id }, { status: UserType.DELETED });
   }
 
-  async listAllBuckets() {
-    try {
-      return this.minioService.client.listBuckets();
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
+  async uploadProfilePhoto(user: User, image: Express.Multer.File) {
+    const uploaded_image = await this.minioService.uploadImage(
+      image,
+      this.environmentService.userBucketName,
+    );
+
+    await this.userRepository.update({ id: user.id }, { profilePhoto: uploaded_image });
+
+    return {
+      imageUrl: this.minioService.generateUrl(
+        this.environmentService.minioEndpoint,
+        this.environmentService.minioPort,
+        this.environmentService.userBucketName,
+        uploaded_image,
+      ),
+      message: 'Image upload successful',
+    };
+  }
+
+  async getProfilePhoto(user: User): Promise<string> {
+    const photo = await this.minioService.client.presignedGetObject(
+      this.environmentService.userBucketName,
+      user.profilePhoto,
+    );
+    return photo; // TODO: should send object not object url
   }
 }

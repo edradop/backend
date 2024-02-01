@@ -22,8 +22,8 @@ export class AuthenticationController {
 
   @Public()
   @Post('login')
-  login(@Body() { email, password }: EmailPasswordDto): Promise<LoginResponse | null> {
-    return this.authenticationService.loginWithEmail(email, password);
+  async login(@Body() { email, password }: EmailPasswordDto): Promise<LoginResponse | null> {
+    return await this.authenticationService.loginWithEmail(email, password);
   }
   @Public()
   @Post('signup')
