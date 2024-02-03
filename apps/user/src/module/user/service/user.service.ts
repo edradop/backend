@@ -2,7 +2,7 @@ import { SignUpDto } from '@edd/common/module/authentication';
 import { PromiseHandlerService } from '@edd/common/module/http-exception';
 import { MinioService } from '@edd/common/module/minio/service';
 import { EnvironmentService } from '@edd/config/module/environment';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -13,6 +13,7 @@ import { CreateUserDto, UpdateUserDto, UserType } from '../type';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -44,10 +45,7 @@ export class UserService {
     });
     user.authorities = authorities;
 
-    await this.promiseHandlerService.conflict(this.userRepository.save(user), {
-      titleKey: 'user.exists.title',
-      messageKey: 'user.exists.message',
-    });
+    await this.promiseHandlerService.conflict(this.userRepository.save(user));
     const result = await this.userRepository.save(user);
     const userModel = await this.userRepository.findOneBy({
       id: result.id,
@@ -55,8 +53,8 @@ export class UserService {
     return userModel || ({} as User);
   }
 
-  findOne(id: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ id: id });
+  async findOne(id: string): Promise<User | null> {
+    return await this.userRepository.findOneByOrFail({ id: id });
   }
 
   async signUp(dto: SignUpDto): Promise<User> {
@@ -68,10 +66,6 @@ export class UserService {
     if (dto.username) {
       user.username = dto.username;
     }
-    await this.promiseHandlerService.conflict(this.userRepository.save(user), {
-      titleKey: 'user.exists.title',
-      messageKey: 'user.exists.message',
-    });
     const result = await this.userRepository.save(user);
     return (await this.userRepository.findOneBy({
       id: result.id,
@@ -95,9 +89,9 @@ export class UserService {
 
   async getUserByEmailPassword(email: string, password: string): Promise<User | null> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(email, password, hashedPassword);
-    const user = await this.userRepository.findOne({
-      where: { email },
+    this.logger.debug(email, password, hashedPassword);
+    const user = await this.userRepository.findOneByOrFail({
+      email,
     });
     return user;
   }

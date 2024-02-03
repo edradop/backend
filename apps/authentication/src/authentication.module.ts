@@ -1,4 +1,4 @@
-import { registerJwtModule } from '@edd/common';
+import { appFreezePipe, registerJwtModule } from '@edd/common';
 import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
 import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import { UserModule } from '@edd/common/module/user';
@@ -17,6 +17,6 @@ import { AuthenticationService } from './service';
     HttpExceptionModule,
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, appJwtGuard],
+  providers: [AuthenticationService, appJwtGuard, appFreezePipe],
 })
 export class AuthenticationModule {}

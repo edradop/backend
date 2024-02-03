@@ -1,5 +1,4 @@
 import { Public, RequestUser } from '@edd/common';
-import { HttpExceptionService } from '@edd/common/module/http-exception';
 import {
   EmailPasswordDto,
   SignUpDto,
@@ -15,10 +14,7 @@ import { LoginResponse } from '../type';
 @ApiTags('authentication')
 @Controller({ path: 'authentication', version: '1' })
 export class AuthenticationController {
-  constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly httpExceptionService: HttpExceptionService,
-  ) {}
+  constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Public()
   @Post('login')
@@ -36,13 +32,7 @@ export class AuthenticationController {
   @Post('refresh-token')
   refreshToken(@Req() req: { user: TUser }): Promise<LoginResponse | null> {
     const { user } = req;
-    if (!user) {
-      throw this.httpExceptionService.notFound({
-        titleKey: 'user.notFound.title',
-        messageKey: 'user.notFound.message',
-      });
-    }
-    return this.authenticationService.refreshToken(user as TUser);
+    return this.authenticationService.refreshToken(user);
   }
 
   @Public()

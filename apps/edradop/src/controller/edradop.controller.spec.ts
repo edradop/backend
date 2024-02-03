@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EdradopController } from './edradop.controller';
-import { EdradopService } from '../service/edradop.service';
+import { EdradopService } from '../service';
 
 describe('EdradopController', () => {
   let appController: EdradopController;

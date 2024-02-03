@@ -10,6 +10,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -28,6 +29,7 @@ import { CreateUserDto } from '../type';
 @ApiBearerAuth()
 @Controller({ path: 'user', version: '1' })
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   @Post()
@@ -52,8 +54,8 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User | null> {
-    return this.userService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<User | null> {
+    return await this.userService.findOne(id);
   }
 
   @Public()
@@ -98,7 +100,7 @@ export class UserController {
     },
   })
   uploadFileAndFailValidation(
-    @Body() body: unknown,
+    @Body() _body: unknown,
     @Req() req: { user: User },
     @UploadedFile(
       new ParseFilePipe({

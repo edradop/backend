@@ -1,5 +1,4 @@
-import { HttpExceptionService } from '@edd/common/module/http-exception';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Role } from '../../role/export';
@@ -13,7 +12,6 @@ export class AuthorityService {
     private readonly authorityRepository: Repository<Authority>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
-    private readonly httpExceptionService: HttpExceptionService,
   ) {}
 
   create(createAuthorityDto: CreateAuthorityDto) {
@@ -44,10 +42,7 @@ export class AuthorityService {
   async remove(id: string): Promise<DeleteResult> {
     const found = await this.roleRepository.findOneBy({ authorities: { id: id } });
     if (found) {
-      throw this.httpExceptionService.badRequest({
-        titleKey: 'authority.cannotDelete.title',
-        messageKey: 'authority.cannotDelete.message',
-      });
+      throw new ConflictException('Authority is in use');
     }
     return this.authorityRepository.delete(id);
   }
