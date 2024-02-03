@@ -10,7 +10,6 @@ import {
   Delete,
   FileTypeValidator,
   Get,
-  Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -29,7 +28,6 @@ import { CreateUserDto } from '../type';
 @ApiBearerAuth()
 @Controller({ path: 'user', version: '1' })
 export class UserController {
-  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   @Post()

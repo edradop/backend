@@ -1,17 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
-import { HttpExceptionService } from '../../http-exception';
-import { EnvironmentService } from '@edd/config/module/environment';
 import { AUTHENTICATION_DEFAULT_HOST } from '@edd/config';
+import { EnvironmentService } from '@edd/config/module/environment';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import axios from 'axios';
 
 @Injectable()
 export class AuthenticationService {
   private readonly authenticationServiceUrl!: string;
 
-  constructor(
-    private readonly portService: EnvironmentService,
-    private readonly httpExceptionService: HttpExceptionService,
-  ) {
+  constructor(private readonly portService: EnvironmentService) {
     const port = this.portService.authenticationPort;
     this.authenticationServiceUrl = `${AUTHENTICATION_DEFAULT_HOST}:${port}`;
   }
@@ -26,13 +22,7 @@ export class AuthenticationService {
       return response.data;
     } catch (error) {
       // Handle the error appropriately
-      throw this.httpExceptionService.badRequest(
-        {
-          titleKey: 'authentication.validate.title',
-          messageKey: 'authentication.validate.message',
-        },
-        error as string,
-      );
+      throw new BadRequestException(error);
     }
   }
 

@@ -1,5 +1,4 @@
 import { SignUpDto } from '@edd/common/module/authentication';
-import { PromiseHandlerService } from '@edd/common/module/http-exception';
 import { MinioService } from '@edd/common/module/minio/service';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { Injectable, Logger } from '@nestjs/common';
@@ -21,7 +20,6 @@ export class UserService {
     private readonly roleRepository: Repository<Role>,
     @InjectRepository(Authority)
     private readonly authorityRepository: Repository<Authority>,
-    private readonly promiseHandlerService: PromiseHandlerService,
     private readonly minioService: MinioService,
     private readonly environmentService: EnvironmentService,
   ) {}
@@ -45,7 +43,6 @@ export class UserService {
     });
     user.authorities = authorities;
 
-    await this.promiseHandlerService.conflict(this.userRepository.save(user));
     const result = await this.userRepository.save(user);
     const userModel = await this.userRepository.findOneBy({
       id: result.id,

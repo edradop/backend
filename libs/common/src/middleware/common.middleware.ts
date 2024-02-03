@@ -2,7 +2,7 @@ import { ValidationPipe, VersioningType, type INestApplication } from '@nestjs/c
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { HttpExceptionFilter } from '../module/http-exception/filter';
+import { HttpExceptionFilter } from '../filter';
 
 function commonMiddleware(app: INestApplication): INestApplication {
   const isProduction = process.env.NODE_ENV === 'production';
