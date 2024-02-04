@@ -27,10 +27,10 @@ export class AuthorityService {
   }
 
   findOne(id: string) {
-    return this.authorityRepository.findOneBy({ id: id });
+    return this.authorityRepository.findOneByOrFail({ id: id });
   }
 
-  async update(id: string, updateAuthorityDto: UpdateAuthorityDto): Promise<Authority | null> {
+  async update(id: string, updateAuthorityDto: UpdateAuthorityDto): Promise<Authority> {
     const authority = new Authority();
     authority.name = updateAuthorityDto.name;
     authority.id = id;
@@ -40,7 +40,7 @@ export class AuthorityService {
   }
 
   async remove(id: string): Promise<DeleteResult> {
-    const found = await this.roleRepository.findOneBy({ authorities: { id: id } });
+    const found = await this.roleRepository.findOneByOrFail({ authorities: { id: id } });
     if (found) {
       throw new HttpException(
         'Cannot delete authority, authority is in use by roles',

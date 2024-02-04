@@ -4,12 +4,12 @@ import { EnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { TokenPayload } from 'google-auth-library';
 import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
 import { ThirdPartyAuthentication, User } from '../export';
 import { CreateUserDto, ThirdPartyName, UpdatePasswordDto, UpdateUserDto, UserType } from '../type';
-import { TokenPayload } from 'google-auth-library';
 
 @Injectable()
 export class UserService {
@@ -57,24 +57,30 @@ export class UserService {
   }
 
   async continueWithGoogle(tokenPayload: TokenPayload): Promise<User> {
-    this.logger.debug(`user service continue with google ${tokenPayload.email}`);
-    const _user = await this.userRepository.findOneBy({
-      email: tokenPayload.email,
+    this.logger.debug(`user service continue with google`);
+    const _user = await this.userRepository.findOneOrFail({
+      where: {
+        email: tokenPayload.email as string,
+      },
+      relations: ['thirdParties'],
     });
-    this.logger.debug(`user service continue with google - 2 ${_user?.email}`);
     if (_user) {
-      if (_user.thirdParties.find((item) => item.name === ThirdPartyName.GOOGLE)) {
+      this.logger.debug(JSON.stringify(_user));
+      if (_user.thirdParties?.find((item) => item.name === ThirdPartyName.GOOGLE)) {
         return _user;
       }
       const googleModel = new ThirdPartyAuthentication();
       googleModel.name = ThirdPartyName.GOOGLE;
+      googleModel.user = _user;
 
       const google = await this.thirdPartyRepository.save(googleModel);
-      this.userRepository.update(_user.id, {
+
+      await this.userRepository.update(_user.id, {
         thirdParties: [google],
       });
       return _user;
     }
+
     const userModel = new User();
     userModel.firstName = tokenPayload.given_name;
     userModel.lastName = tokenPayload.family_name;
@@ -112,7 +118,7 @@ export class UserService {
       user.username = dto.username;
     }
     const result = await this.userRepository.save(user);
-    return (await this.userRepository.findOneBy({
+    return (await this.userRepository.findOneByOrFail({
       id: result.id,
     })) as User;
   }
@@ -149,7 +155,7 @@ export class UserService {
     throw new HttpException('Password not matching with current password', HttpStatus.BAD_REQUEST);
   }
 
-  async getUserByEmailPassword(email: string, password: string): Promise<User | null> {
+  async getUserByEmailPassword(email: string, password: string): Promise<User> {
     const user = await this.userRepository
       .createQueryBuilder('row')
       .addSelect('row.password')
@@ -163,9 +169,9 @@ export class UserService {
     throw new HttpException('Invalid credentials', 401);
   }
 
-  async getUserByUsernamePassword(username: string, password: string): Promise<User | null> {
+  async getUserByUsernamePassword(username: string, password: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return await this.userRepository.findOneBy({ username, password: hashedPassword });
+    return await this.userRepository.findOneByOrFail({ username, password: hashedPassword });
   }
 
   async remove(id: string): Promise<void> {
