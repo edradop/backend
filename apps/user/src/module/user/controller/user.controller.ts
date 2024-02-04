@@ -24,6 +24,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { User } from '../export';
 import { UserService } from '../service';
 import { CreateUserDto, UpdatePasswordDto } from '../type';
+import { TokenPayload } from 'google-auth-library';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -35,6 +36,12 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
+  }
+
+  @Public()
+  @Post('continue-with-google')
+  continueWithGoogle(@Body() tokenPayload: TokenPayload): Promise<User> {
+    return this.userService.continueWithGoogle(tokenPayload);
   }
 
   @Public()

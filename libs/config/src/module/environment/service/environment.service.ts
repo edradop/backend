@@ -9,6 +9,10 @@ import {
   DEFAULT_USER_BUCKET_NAME,
   EDRADOP_DEFAULT_PORT,
   EDRADOP_PORT,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_DEFAULT_CLIENT_ID,
+  GOOGLE_DEFAULT_CLIENT_SECRET,
   JWT_DEFAULT_EXPIRES_IN,
   JWT_DEFAULT_SECRET,
   JWT_EXPIRES_IN,
@@ -172,6 +176,13 @@ export class EnvironmentService {
 
   get userBucketName(): string {
     return this.configService.get<string>(USER_BUCKET_NAME, DEFAULT_USER_BUCKET_NAME);
+  }
+
+  get googleClientId(): string {
+    return this.configService.get<string>(GOOGLE_CLIENT_ID, GOOGLE_DEFAULT_CLIENT_ID);
+  }
+  get googleClientSecret(): string {
+    return this.configService.get<string>(GOOGLE_CLIENT_SECRET, GOOGLE_DEFAULT_CLIENT_SECRET);
   }
 
   get<T>(key: string, defaultValue?: T): T | undefined {

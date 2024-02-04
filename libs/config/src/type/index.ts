@@ -1,1 +1,1 @@
-export * from './enum/authority.enum';
+export * from './authority.enum';

@@ -1,6 +1,6 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
-function UsernameValidation(validationOptions?: ValidationOptions) {
+function UsernameValidation(required: boolean = true, validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       name: 'UsernameValidation',
@@ -9,7 +9,7 @@ function UsernameValidation(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          if (!value) return true;
+          if (!value && !required) return true;
           return /^[a-zA-Z0-9_-]{5,20}$/.test(value);
         },
         defaultMessage() {

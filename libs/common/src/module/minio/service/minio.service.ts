@@ -3,6 +3,7 @@ import { MODULE_OPTIONS_TOKEN, OPTIONS_TYPE } from '../definition';
 import { MinioClient, MinioCopyConditions } from '../type';
 import { createMinioClient, createCopyConditions } from '../util';
 import * as crypto from 'crypto';
+import { Readable } from 'stream';
 
 @Injectable()
 export class MinioService {
@@ -44,6 +45,21 @@ export class MinioService {
 
   generateUrl(host: string, port: number, bucketName: string, fileName: string) {
     return `${host}:${port}/${bucketName}/${fileName}`;
+  }
+
+  createMulterFileObject(buffer: Readable, filename: string, mimetype: string, size: number) {
+    // Assuming `buffer` is your Buffer instance, and `filename` & `mimetype` are strings
+    const multerFile = {
+      fieldname: 'file', // This should match the name of the form field used to upload the file
+      originalname: filename,
+      mimetype: mimetype,
+      size: size,
+      buffer: buffer,
+      destination: 'undefined',
+      filename: filename,
+      path: 'undefined',
+    } as unknown;
+    return multerFile as Express.Multer.File;
   }
 
   async delete(objetName: string, bucketName: string) {

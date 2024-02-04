@@ -1,7 +1,7 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 import { PASSWORD_REGEXP } from '../constant';
 
-function PasswordValidation(validationOptions?: ValidationOptions) {
+function PasswordValidation(required: boolean = true, validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       name: 'PasswordValidation',
@@ -10,6 +10,7 @@ function PasswordValidation(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: string) {
+          if (!value && !required) return true;
           return PASSWORD_REGEXP.test(value);
         },
         defaultMessage() {

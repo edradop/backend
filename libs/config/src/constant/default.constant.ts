@@ -26,6 +26,9 @@ export const MINIO_DEFAULT_USE_SSL = false;
 export const MINIO_DEFAULT_ACCESS_KEY = 'Qc8llZt2ReqIM1uA4LRE';
 export const MINIO_DEFAULT_SECRET_KEY = 'kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6';
 export const DEFAULT_USER_BUCKET_NAME = 'userbucket';
+export const GOOGLE_DEFAULT_CLIENT_ID =
+  '315875564613-18mb3oeu6bdde8tianafi0u8dj8d6n3k.apps.googleusercontent.com';
+export const GOOGLE_DEFAULT_CLIENT_SECRET = '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';
 
 // Qc8llZt2ReqIM1uA4LRE
 // kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6

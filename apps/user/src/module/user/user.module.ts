@@ -1,10 +1,8 @@
 import { AuthenticationModule } from '@edd/common/module/authentication';
-import { MinioConfig, MinioModule } from '@edd/common/module/minio';
-import { AuthorityEnum } from '@edd/config';
+import { AuthorityEnum, registerMinioModule } from '@edd/config';
 import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClientOptions } from 'minio';
 import { Repository } from 'typeorm';
 import { Authority, AuthorityExportModule } from '../authority/export';
 import { Role, RoleExportModule } from '../role/export';
@@ -21,7 +19,7 @@ import { UserType } from './type';
     AuthenticationModule,
     UserExportModule,
     EnvironmentModule,
-    minio(),
+    registerMinioModule(),
   ],
   controllers: [UserController],
   providers: [UserService],
@@ -99,20 +97,4 @@ async function createDefaults(
     userModel.roles = [role];
     await userRepository.update(userModel.id, user);
   }
-}
-
-function minio() {
-  return MinioModule.registerAsync({
-    imports: [EnvironmentModule],
-    inject: [EnvironmentService],
-    useFactory: (environmentService: EnvironmentService) => {
-      return {
-        endPoint: environmentService.minioEndpoint,
-        port: environmentService.minioPort,
-        useSSL: environmentService.minioUseSSL,
-        accessKey: environmentService.minioAccessKey,
-        secretKey: environmentService.minioSecretKey,
-      } as ClientOptions & Partial<MinioConfig>;
-    },
-  });
 }

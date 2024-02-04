@@ -15,6 +15,7 @@ import {
 import { UserType } from '../../type';
 import { Role } from '../../../role/export';
 import { Authority } from '../../../authority/export';
+import { ThirdPartyAuthentication } from './third-party-authentication.entity';
 
 @Entity()
 export class User {
@@ -23,22 +24,26 @@ export class User {
 
   @IsNotEmpty()
   @Length(3, 50)
-  @Column({ type: 'varchar', length: 50 })
-  firstName!: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  firstName?: string;
 
   @Length(3, 50)
   @IsNotEmpty()
-  @Column({ type: 'varchar', length: 50 })
-  lastName!: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  lastName?: string;
 
   @IsNotEmpty()
   @IsEmail()
-  @Column({ unique: true })
-  email!: string;
+  @Column({ unique: true, nullable: true })
+  email?: string;
 
   @PasswordValidation()
   @Column({ select: false, nullable: true })
   password?: string;
+
+  @PasswordValidation()
+  @Column({ default: false, nullable: true })
+  isHasPassword?: boolean;
 
   @UsernameValidation()
   @Column({ type: 'varchar', length: 20, nullable: true })
@@ -50,13 +55,16 @@ export class User {
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   @Length(0, 500)
-  profilePhoto!: string;
+  profilePhoto?: string;
 
   @OneToMany(() => Role, (role) => role.owner)
   ownRoles!: Role[];
 
   @OneToMany(() => Authority, (authority) => authority.owner)
   ownAuthorities!: Authority[];
+
+  @OneToMany(() => ThirdPartyAuthentication, (thirdParty) => thirdParty.user)
+  thirdParties!: ThirdPartyAuthentication[];
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
@@ -72,7 +80,7 @@ export class User {
     enum: UserType,
     nullable: true,
   })
-  status!: UserType;
+  status?: UserType;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -92,7 +100,7 @@ export class User {
     // Generates a random 15-character string
     const randomString = Math.random().toString(36).substring(2, 17);
     if (!this.username) {
-      this.username = `${this.firstName.substring(0, 5)}${randomString}`;
+      this.username = `${this.firstName?.substring(0, 5)}${randomString}`;
     }
   }
 }

@@ -1,6 +1,6 @@
 import { UsernameValidation } from '@edd/common';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../export/type';
+import { User } from '.';
 
 @Entity()
 export class Username {

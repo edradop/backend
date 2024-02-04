@@ -3,6 +3,7 @@ import { USER_DEFAULT_HOST } from '@edd/config';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
+import { TokenPayload } from 'google-auth-library';
 
 @Injectable()
 export class UserService {
@@ -48,6 +49,18 @@ export class UserService {
   async signUpWithEmail(dto: SignUpDto): Promise<any> {
     try {
       const response = await axios.post(`${this.userServiceUrl}/v1/user/signup`, dto);
+      return response.data;
+    } catch (error) {
+      throw new BadRequestException();
+    }
+  }
+
+  async continueWithGoogle(payload: TokenPayload): Promise<any> {
+    try {
+      const response = await axios.post(
+        `${this.userServiceUrl}/v1/user/continue-with-google`,
+        payload,
+      );
       return response.data;
     } catch (error) {
       throw new BadRequestException();
