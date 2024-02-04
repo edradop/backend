@@ -2,8 +2,10 @@ import { IsNotEmpty, IsEmail, Length, IsUUID, ValidateNested } from 'class-valid
 import { ApiProperty } from '@nestjs/swagger';
 import { PasswordValidation, UsernameValidation } from '@edd/common';
 import { Type } from 'class-transformer';
+import { PrimaryGeneratedColumn } from 'typeorm';
 
 export class CreateUserDto {
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @ApiProperty({ example: 'John', description: 'First name of the user' })

@@ -1,12 +1,13 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { USER_DEFAULT_HOST } from '@edd/config';
 import { EnvironmentService } from '@edd/config/module/environment';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 
 @Injectable()
 export class UserService {
   private readonly userServiceUrl!: string;
+  private readonly logger = new Logger(`Common ${UserService.name}`);
 
   constructor(private readonly portService: EnvironmentService) {
     const port = this.portService.userPort;
@@ -21,7 +22,8 @@ export class UserService {
       });
       return response.data;
     } catch (error) {
-      throw new NotFoundException();
+      this.logger.error(error);
+      throw new HttpException(error as string, HttpStatus.BAD_REQUEST);
     }
   }
   async validateUserWithUsername(username: string, password: string): Promise<any> {
@@ -32,7 +34,7 @@ export class UserService {
       });
       return response.data;
     } catch (error) {
-      throw new NotFoundException();
+      throw new HttpException(error as string, HttpStatus.BAD_REQUEST);
     }
   }
   async validateUserById(id: string): Promise<any> {
@@ -40,7 +42,7 @@ export class UserService {
       const response = await axios.get(`${this.userServiceUrl}/v1/user/by-id/${id}`);
       return response.data;
     } catch (error) {
-      throw new NotFoundException();
+      throw new HttpException(error as string, HttpStatus.BAD_REQUEST);
     }
   }
   async signUpWithEmail(dto: SignUpDto): Promise<any> {

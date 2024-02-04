@@ -1,15 +1,15 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
+  Catch,
+  ExceptionFilter,
   HttpException,
-  Logger,
   HttpStatus,
-  UnauthorizedException,
+  Logger,
 } from '@nestjs/common';
+import { TokenExpiredError } from '@nestjs/jwt';
 import { HttpStatusCode } from 'axios';
 import { Request, Response } from 'express';
-import { QueryFailedError, EntityNotFoundError, CannotCreateEntityIdMapError } from 'typeorm';
+import { CannotCreateEntityIdMapError, EntityNotFoundError, QueryFailedError } from 'typeorm';
 import { GlobalResponseError } from '../type';
 
 @Catch()
@@ -42,7 +42,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      message,
+      message: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : message,
       code,
       errorKey,
       method: methodKey,
@@ -83,11 +83,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let status: HttpStatus;
     let message!: string;
     let code!: string;
-
     switch (exception.constructor) {
       case HttpException:
-      case UnauthorizedException:
         status = exception.getStatus();
+        message = exception.message;
+        break;
+      case TokenExpiredError:
+        status = HttpStatus.UNAUTHORIZED;
         message = exception.message;
         break;
       case QueryFailedError: // this is a TypeOrm error

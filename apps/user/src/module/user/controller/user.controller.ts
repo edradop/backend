@@ -10,6 +10,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -22,12 +23,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { User } from '../export';
 import { UserService } from '../service';
-import { CreateUserDto } from '../type';
+import { CreateUserDto, UpdatePasswordDto } from '../type';
 
 @ApiTags('user')
 @ApiBearerAuth()
 @Controller({ path: 'user', version: '1' })
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   @Post()
@@ -36,7 +38,7 @@ export class UserController {
   }
 
   @Public()
-  @Post()
+  @Post('sign-up')
   signUp(@Body() user: SignUpDto): Promise<User> {
     return this.userService.signUp(user);
   }
@@ -54,6 +56,12 @@ export class UserController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<User | null> {
     return await this.userService.findOne(id);
+  }
+
+  @Post('update-password')
+  updatePassword(@Body() updatePasswordDto: UpdatePasswordDto) {
+    this.logger.debug('user controller update password');
+    return this.userService.updatePassword(updatePasswordDto);
   }
 
   @Public()

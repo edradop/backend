@@ -1,5 +1,4 @@
 import { AuthenticationModule } from '@edd/common/module/authentication';
-import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import { MinioConfig, MinioModule } from '@edd/common/module/minio';
 import { AuthorityEnum } from '@edd/config';
 import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
@@ -19,7 +18,6 @@ import { UserType } from './type';
     UserExportModule,
     AuthorityExportModule,
     RoleExportModule,
-    HttpExceptionModule,
     AuthenticationModule,
     UserExportModule,
     EnvironmentModule,

@@ -1,6 +1,12 @@
 import { extractTokenFromHeader } from '@edd/common/util';
 import { JWT_REFRESH_DEFAULT_SECRET } from '@edd/config';
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -11,7 +17,7 @@ export class JwtRefreshAuthenticationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException('No token provided');
+      throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
     }
     const payload = await this.jwtService.verifyAsync(token, {
       secret: JWT_REFRESH_DEFAULT_SECRET,

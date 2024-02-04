@@ -1,14 +1,14 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
 import { EnvironmentService } from '@edd/config/module/environment';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
 import { User } from '../export';
-import { CreateUserDto, UpdateUserDto, UserType } from '../type';
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto, UserType } from '../type';
 
 @Injectable()
 export class UserService {
@@ -81,16 +81,43 @@ export class UserService {
     user.id = id;
 
     await this.userRepository.update(id, user);
-    return await this.findOne(id);
+    return await this.userRepository.findOneByOrFail({ id: id });
+  }
+
+  async updatePassword(dto: UpdatePasswordDto): Promise<HttpException> {
+    this.logger.debug(dto);
+    const user = await this.userRepository
+      .createQueryBuilder('row')
+      .addSelect('row.password')
+      .where('row.id = :id', { id: dto.id })
+      .getOne();
+    this.logger.debug('dto ------------------------------- 1');
+    if (bcrypt.compareSync(dto.password, user?.password as string)) {
+      this.logger.debug('dto ------------------------------- 2');
+      await this.userRepository.update(dto.id, {
+        password: bcrypt.hashSync(dto.newPassword, 10),
+      });
+      return new HttpException('Password updated successfully', HttpStatus.OK);
+    }
+    this.logger.debug('dto ------------------------------- 3');
+    throw new HttpException('Password not matching with current password', HttpStatus.BAD_REQUEST);
   }
 
   async getUserByEmailPassword(email: string, password: string): Promise<User | null> {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    this.logger.debug(email, password, hashedPassword);
-    const user = await this.userRepository.findOneByOrFail({
-      email,
-    });
-    return user;
+    this.logger.debug(email, password);
+    const user = await this.userRepository
+      .createQueryBuilder('row')
+      .addSelect('row.password')
+      .where('row.email = :email', { email })
+      .getOne();
+    // const user = await this.userRepository.findOneByOrFail({
+    //   email,
+    // });
+    this.logger.debug(user?.password, password);
+    if (await bcrypt.compare(password, user?.password as string)) {
+      return user;
+    }
+    throw new HttpException('Invalid credentials', 401);
   }
 
   async getUserByUsernamePassword(username: string, password: string): Promise<User | null> {

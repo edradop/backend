@@ -1,6 +1,5 @@
 import { appFreezePipe, registerJwtModule } from '@edd/common';
 import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
-import { HttpExceptionModule } from '@edd/common/module/http-exception';
 import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -13,7 +12,6 @@ import { UserModule } from './module/user';
   imports: [
     ConfigModule.forRoot(),
     EnvironmentModule,
-    HttpExceptionModule,
     registerJwtModule(),
     typeOrm(),
     UserModule,
