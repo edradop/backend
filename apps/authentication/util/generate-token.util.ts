@@ -1,4 +1,4 @@
-import { TUser } from '@edd/common/module/user';
+import { TAuthority, TUser } from '@edd/common/module/user';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { JwtService } from '@nestjs/jwt';
 
@@ -12,6 +12,8 @@ const generateToken = async (
     profilePhoto: user.profilePhoto,
     username: user.username,
     email: user.email,
+    authorities: user.authorities?.map((item: unknown) => (item as TAuthority).code),
+    roles: user.roles,
   };
   const accessToken = jwtService.sign(data, {
     expiresIn: environmentService.jwtExpiresIn,

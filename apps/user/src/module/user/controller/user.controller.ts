@@ -1,9 +1,10 @@
-import { Public } from '@edd/common';
+import { Authorities, Public } from '@edd/common';
 import {
   EmailPasswordDto,
   SignUpDto,
   UsernamePasswordDto,
 } from '@edd/common/module/authentication';
+import { AuthorityEnum } from '@edd/config';
 import {
   Body,
   Controller,
@@ -21,10 +22,10 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { TokenPayload } from 'google-auth-library';
 import { User } from '../export';
 import { UserService } from '../service';
 import { CreateUserDto, UpdatePasswordDto } from '../type';
-import { TokenPayload } from 'google-auth-library';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -34,6 +35,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Authorities(AuthorityEnum.CREATE_USER)
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
@@ -51,6 +53,7 @@ export class UserController {
   }
 
   @Get()
+  @Authorities(AuthorityEnum.SUPER_USER)
   findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
@@ -61,6 +64,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @Authorities(AuthorityEnum.READ_USER)
   async findOne(@Param('id') id: string): Promise<User | null> {
     return await this.userService.findOne(id);
   }
@@ -92,6 +96,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @Authorities(AuthorityEnum.DELETE_USER)
   remove(@Param('id') id: string): Promise<void> {
     return this.userService.remove(id);
   }
@@ -103,8 +108,6 @@ export class UserController {
     schema: {
       type: 'object',
       properties: {
-        comment: { type: 'string' },
-        outletId: { type: 'integer' },
         file: {
           type: 'string',
           format: 'binary',
@@ -118,7 +121,7 @@ export class UserController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 1 }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
         ],
       }),

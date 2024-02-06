@@ -1,3 +1,4 @@
+import { TAuthority } from './authority.type';
 import { TRole } from './role.type';
 
 type TUser = {
@@ -8,9 +9,9 @@ type TUser = {
   email: string;
   bio: string;
   profilePhoto: string;
-  authorities: string[];
+  authorities: string[] | TAuthority[];
   status: string;
-  ownAuthorities: string[];
+  ownAuthorities: string[] | TAuthority[];
   roles: TRole[];
   ownRoles: TRole[];
   createdAt: Date;

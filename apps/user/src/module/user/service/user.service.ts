@@ -157,10 +157,13 @@ export class UserService {
 
   async getUserByEmailPassword(email: string, password: string): Promise<User> {
     const user = await this.userRepository
-      .createQueryBuilder('row')
-      .addSelect('row.password')
-      .where('row.email = :email', { email })
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .leftJoinAndSelect('user.roles', 'role')
+      .leftJoinAndSelect('user.authorities', 'authority')
+      .where('user.email = :email', { email })
       .getOneOrFail();
+    this.logger.debug(JSON.stringify(user));
     if (await bcrypt.compare(password, user?.password as string)) {
       this.logger.debug(`login ${user?.username} successfully`);
       return user;

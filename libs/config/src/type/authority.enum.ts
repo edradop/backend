@@ -1,4 +1,5 @@
 export enum AuthorityEnum {
+  SUPER_USER = 'SUPER_USER',
   CREATE_USER = 'CREATE_USER',
   EDIT_USER = 'EDIT_USER',
   READ_USER = 'READ_USER',
