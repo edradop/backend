@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthorityService } from '../service';
-import { CreateAuthorityDto, UpdateAuthorityDto } from '../type';
+import { CreateAuthorityDto, UpdateAuthorityDto } from '@edd/common/module/authority/type';
 
 @ApiTags('authority')
 @Controller({ path: 'authority', version: '1' })

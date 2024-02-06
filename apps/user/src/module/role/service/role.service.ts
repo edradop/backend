@@ -1,7 +1,7 @@
+import { CreateRoleDto, UpdateRoleDto } from '@edd/common/module/role/type';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult } from 'typeorm';
-import { CreateRoleDto, UpdateRoleDto } from '../type';
+import { DeleteResult, Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../export';
 

@@ -1,4 +1,4 @@
-import { LoginResponse } from '@edd/authentication/type';
+import { LoginResponse } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
 import { TUser, UserService } from '@edd/common/module/user';
 import { EnvironmentService } from '@edd/config/module/environment';

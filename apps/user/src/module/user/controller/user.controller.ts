@@ -25,7 +25,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { TokenPayload } from 'google-auth-library';
 import { User } from '../export';
 import { UserService } from '../service';
-import { CreateUserDto, UpdatePasswordDto } from '../type';
+import { CreateUserDto, UpdatePasswordDto } from '@edd/common/module/user';
 
 @ApiTags('user')
 @ApiBearerAuth()

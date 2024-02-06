@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { RoleService } from '../service';
-import { CreateRoleDto, UpdateRoleDto } from '../type';
+import { CreateRoleDto, UpdateRoleDto } from '@edd/common/module/role/type';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { RoleService } from '../service';
 
 @ApiTags('role')
 @Controller({ path: 'role', version: '1' })

@@ -1,10 +1,9 @@
-import { SignUpDto } from '@edd/common/module/authentication';
+import { LoginResponse, SignUpDto } from '@edd/common/module/authentication';
 import { TUser, UserService } from '@edd/common/module/user';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken } from 'apps/authentication/util';
-import { LoginResponse } from '../type';
 
 @Injectable()
 export class AuthenticationService {

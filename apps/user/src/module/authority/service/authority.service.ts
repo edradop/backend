@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Role } from '../../role/export';
 import { Authority } from '../export';
-import { CreateAuthorityDto, UpdateAuthorityDto } from '../type';
+import { CreateAuthorityDto, UpdateAuthorityDto } from '@edd/common/module/authority/type';
 
 @Injectable()
 export class AuthorityService {

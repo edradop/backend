@@ -1,6 +1,7 @@
 import { Public, RequestUser } from '@edd/common';
 import {
   EmailPasswordDto,
+  LoginResponse,
   SignUpDto,
   UsernamePasswordDto,
 } from '@edd/common/module/authentication';
@@ -9,7 +10,6 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtRefreshAuthenticationGuard } from '../guard';
 import { AuthenticationService } from '../service';
-import { LoginResponse } from '../type';
 
 @ApiTags('authentication')
 @Controller({ path: 'authentication', version: '1' })

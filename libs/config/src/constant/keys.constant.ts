@@ -28,6 +28,9 @@ export const MINIO_SECRET_KEY = 'MINIO_SECRET_KEY';
 export const USER_BUCKET_NAME = 'USER_BUCKET_NAME';
 export const GOOGLE_CLIENT_ID = 'GOOGLE_CLIENT_ID';
 export const GOOGLE_CLIENT_SECRET = 'GOOGLE_CLIENT_SECRET';
+export const CACHE_HOST = 'CACHE_HOST';
+export const CACHE_PORT = 'CACHE_PORT';
+export const CACHE_TTL = 'CACHE_TTL';
 
 export const IS_PUBLIC = 'IS_PUBLIC_KEY';
 export const AUTHORITY = 'AUTHORITY';

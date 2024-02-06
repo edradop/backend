@@ -9,7 +9,7 @@ import { Role, RoleExportModule } from '../role/export';
 import { UserController } from './controller';
 import { User, UserExportModule } from './export';
 import { UserService } from './service';
-import { UserType } from './type';
+import { UserType } from '@edd/common/module/user';
 
 @Module({
   imports: [

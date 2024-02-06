@@ -9,7 +9,13 @@ import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
 import { ThirdPartyAuthentication, User } from '../export';
-import { CreateUserDto, ThirdPartyName, UpdatePasswordDto, UpdateUserDto, UserType } from '../type';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UpdatePasswordDto,
+  ThirdPartyName,
+  UserType,
+} from '@edd/common/module/user';
 
 @Injectable()
 export class UserService {
