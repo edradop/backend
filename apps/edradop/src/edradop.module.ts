@@ -1,9 +1,9 @@
+import { EnvironmentModule } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { EdradopController } from './controller';
 import { EdradopService } from './service';
-import { EnvironmentModule } from '@edd/config/module/environment';
 
 @Module({
   imports: [

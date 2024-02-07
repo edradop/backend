@@ -4,7 +4,9 @@ import {
   AUTHENTICATION_DEFAULT_HOST,
   AUTHENTICATION_DEFAULT_PORT,
   AUTHENTICATION_PORT,
+  COMMUNICATION_DEFAULT_HOST,
   COMMUNICATION_DEFAULT_PORT,
+  COMMUNICATION_HOST,
   COMMUNICATION_PORT,
   DEFAULT_USER_BUCKET_NAME,
   EDRADOP_DEFAULT_PORT,
@@ -76,6 +78,10 @@ export class EnvironmentService {
 
   get communicationPort(): number {
     return this.configService.get<number>(COMMUNICATION_PORT, COMMUNICATION_DEFAULT_PORT);
+  }
+
+  get communicationHost(): string {
+    return this.configService.get<string>(COMMUNICATION_HOST, COMMUNICATION_DEFAULT_HOST);
   }
 
   get edradopPort(): number {

@@ -28,53 +28,11 @@
       "./libs/common/src/type/express"
     ],
     "paths": {
-      "@edd/analytic": [
-        "apps/analytic/src"
-      ],
-      "@edd/analytic/*": [
-        "apps/analytic/src/*"
-      ],
-      "@edd/authentication": [
-        "apps/authentication/src"
-      ],
-      "@edd/authentication/*": [
-        "apps/authentication/src/*"
-      ],
       "@edd/common": [
         "libs/common/src"
       ],
       "@edd/common/*": [
         "libs/common/src/*"
-      ],
-      "@edd/communication": [
-        "apps/communication/src"
-      ],
-      "@edd/communication/*": [
-        "apps/communication/src/*"
-      ],
-      "@edd/edradop": [
-        "apps/edradop/src"
-      ],
-      "@edd/edradop/*": [
-        "apps/edradop/src/*"
-      ],
-      "@edd/payment": [
-        "apps/payment/src"
-      ],
-      "@edd/payment/*": [
-        "apps/payment/src/*"
-      ],
-      "@edd/storage": [
-        "apps/storage/src"
-      ],
-      "@edd/storage/*": [
-        "apps/storage/src/*"
-      ],
-      "@edd/user": [
-        "apps/user/src"
-      ],
-      "@edd/user/*": [
-        "apps/user/src/*"
       ],
       "@edd/config": [
         "libs/config/src"

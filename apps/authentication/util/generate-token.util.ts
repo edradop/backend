@@ -2,7 +2,7 @@ import { TAuthority, TUser } from '@edd/common/module/user';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { JwtService } from '@nestjs/jwt';
 
-const generateToken = async (
+const generateToken = (
   user: TUser,
   jwtService: JwtService,
   environmentService: EnvironmentService,

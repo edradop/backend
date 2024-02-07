@@ -5,13 +5,20 @@ export const COMMUNICATION_DEFAULT_PORT = 3003;
 export const PAYMENT_DEFAULT_PORT = 3004;
 export const STORAGE_DEFAULT_PORT = 3005;
 export const USER_DEFAULT_PORT = 3006;
+
+export const EDRADOP_DEFAULT_HOST = 'localhost';
+export const ANALYTIC_DEFAULT_HOST = 'localhost';
+export const AUTHENTICATION_DEFAULT_HOST = 'localhost';
+export const COMMUNICATION_DEFAULT_HOST = 'localhost';
+export const PAYMENT_DEFAULT_HOST = 'localhost';
+export const STORAGE_DEFAULT_HOST = 'localhost';
+export const USER_DEFAULT_HOST = 'localhost';
+
 export const SESSION_DEFAULT_SECRET = 'it-should-be-so-strong-secret-key.it-is-very-secure';
 export const JWT_DEFAULT_SECRET = 'It-shouldBe@So_&highLevelSecretKey%&3123131&^%';
 export const JWT_DEFAULT_EXPIRES_IN = '3h';
 export const JWT_REFRESH_DEFAULT_SECRET = 'It-shoulddawdkladBe@So_&highLevelSecretKey%&3123131&^%';
 export const JWT_REFRESH_DEFAULT_EXPIRES_IN = '7d';
-export const AUTHENTICATION_DEFAULT_HOST = 'localhost';
-export const USER_DEFAULT_HOST = 'localhost';
 export const SUPER_DEFAULT_EMAIL = 'yavuz@toneyavuz.com';
 export const SUPER_DEFAULT_USERNAME = 'yavuz';
 export const SUPER_DEFAULT_PASSWORD = 'yourSecureP@ssw0rd';
