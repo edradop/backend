@@ -1,6 +1,8 @@
+import { registerAuthenticationClient, registerUserClient } from '@edd/config';
 import { EnvironmentModule } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ClientsModule } from '@nestjs/microservices';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { EdradopController } from './controller';
 import { EdradopService } from './service';
@@ -26,6 +28,7 @@ import { EdradopService } from './service';
         limit: 100,
       },
     ]),
+    ClientsModule.registerAsync([registerUserClient(), registerAuthenticationClient()]),
   ],
   controllers: [EdradopController],
   providers: [EdradopService],

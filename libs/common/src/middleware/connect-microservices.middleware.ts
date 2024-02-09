@@ -11,8 +11,11 @@ async function connectMicroServicesMiddleware(
     options: {
       port: port,
       host: host,
+      retryAttempts: 5,
+      retryDelay: 3000,
     },
   });
+
   await app.startAllMicroservices();
   return app;
 }

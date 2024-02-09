@@ -1,4 +1,5 @@
 import { AuthenticationModule } from '@edd/common/module/authentication';
+import { UserType } from '@edd/common/module/user';
 import { AuthorityEnum, registerMinioModule } from '@edd/config';
 import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
@@ -9,7 +10,6 @@ import { Role, RoleExportModule } from '../role/export';
 import { UserController } from './controller';
 import { User, UserExportModule } from './export';
 import { UserService } from './service';
-import { UserType } from '@edd/common/module/user';
 
 @Module({
   imports: [
