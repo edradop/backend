@@ -3,10 +3,9 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { HttpExceptionFilter } from '../filter';
+import { IS_PRODUCTION } from '@edd/config';
 
 function commonMiddleware(app: INestApplication): INestApplication {
-  const isProduction = process.env.NODE_ENV === 'production';
-
   app.use(cookieParser());
   // app.use(csurf());
   app.enableVersioning({
@@ -22,11 +21,11 @@ function commonMiddleware(app: INestApplication): INestApplication {
   app.use(compression());
   app.use(
     helmet({
-      contentSecurityPolicy: isProduction ? undefined : false,
-      crossOriginEmbedderPolicy: isProduction ? undefined : false,
+      contentSecurityPolicy: IS_PRODUCTION ? undefined : false,
+      crossOriginEmbedderPolicy: IS_PRODUCTION ? undefined : false,
     }),
   );
-  if (isProduction) {
+  if (IS_PRODUCTION) {
     app.enableCors();
   }
 

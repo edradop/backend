@@ -1,12 +1,12 @@
+import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { StorageModule } from './storage.module';
-import { EnvironmentService } from '@edd/config/module/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create(StorageModule);
-  const portService = app.get(EnvironmentService);
-  const port = portService.storagePort;
+  const httpEnvironmentService = app.get(HttpEnvironmentService);
+  const port = httpEnvironmentService.storagePort;
 
   await app.listen(port);
 

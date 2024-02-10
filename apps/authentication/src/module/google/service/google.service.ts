@@ -1,7 +1,7 @@
 import { LoginResponse } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
 import { TUser, UserService } from '@edd/common/module/user';
-import { EnvironmentService } from '@edd/config/module/environment';
+import { EnvironmentService, MinioEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken } from 'apps/authentication/util';
@@ -17,6 +17,7 @@ export class GoogleService {
     private jwtService: JwtService,
     private usersService: UserService,
     private environmentService: EnvironmentService,
+    private minioEnvironmentService: MinioEnvironmentService,
     private minioService: MinioService,
   ) {}
 
@@ -66,7 +67,10 @@ export class GoogleService {
         );
 
         // console.log(picture.data);
-        return await this.minioService.uploadImage(file, this.environmentService.userBucketName);
+        return await this.minioService.uploadImage(
+          file,
+          this.minioEnvironmentService.userBucketName,
+        );
       } catch (error) {}
     }
     return response.picture;

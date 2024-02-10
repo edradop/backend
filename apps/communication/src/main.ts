@@ -1,12 +1,12 @@
+import { HttpEnvironmentService } from '@edd/config/module/environment';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { CommunicationModule } from './communication.module';
-import { Logger } from '@nestjs/common';
-import { EnvironmentService } from '@edd/config/module/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create(CommunicationModule);
-  const portService = app.get(EnvironmentService);
-  const port = portService.communicationPort;
+  const httpEnvironmentService = app.get(HttpEnvironmentService);
+  const port = httpEnvironmentService.communicationPort;
 
   await app.listen(port);
 

@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import { EnvironmentService } from './service';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseEnvironmentService, EnvironmentService, MinioEnvironmentService } from './service';
+import { HttpEnvironmentService } from './service';
 
 @Module({
   imports: [ConfigModule],
-  providers: [EnvironmentService],
-  exports: [EnvironmentService],
+  providers: [
+    EnvironmentService,
+    MinioEnvironmentService,
+    HttpEnvironmentService,
+    DatabaseEnvironmentService,
+  ],
+  exports: [
+    EnvironmentService,
+    MinioEnvironmentService,
+    HttpEnvironmentService,
+    DatabaseEnvironmentService,
+  ],
 })
 export class EnvironmentModule {}

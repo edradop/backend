@@ -1,5 +1,5 @@
 import { AUTHENTICATION_DEFAULT_HOST } from '@edd/config';
-import { EnvironmentService } from '@edd/config/module/environment';
+import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 
@@ -7,8 +7,8 @@ import axios from 'axios';
 export class AuthenticationService {
   private readonly authenticationServiceUrl!: string;
 
-  constructor(private readonly portService: EnvironmentService) {
-    const port = this.portService.authenticationPort;
+  constructor(private readonly httpEnvironmentService: HttpEnvironmentService) {
+    const port = this.httpEnvironmentService.authenticationPort;
     this.authenticationServiceUrl = `${AUTHENTICATION_DEFAULT_HOST}:${port}`;
   }
 

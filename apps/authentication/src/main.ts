@@ -2,7 +2,7 @@ import { AuthenticationModule } from './authentication.module';
 
 import { commonMiddleware, connectMicroServicesMiddleware } from '@edd/common';
 import { SwaggerOptions, swagger } from '@edd/config';
-import { EnvironmentService } from '@edd/config/module/environment';
+import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -14,9 +14,9 @@ const swaggerOptions: SwaggerOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthenticationModule);
-  const portService = app.get(EnvironmentService);
-  const host = portService.authenticationHost;
-  const port = portService.authenticationPort;
+  const httpEnvironmentService = app.get(HttpEnvironmentService);
+  const host = httpEnvironmentService.authenticationHost;
+  const port = httpEnvironmentService.authenticationPort;
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);

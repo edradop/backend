@@ -1,19 +1,19 @@
-import { DynamicModule } from '@nestjs/common';
-import { EnvironmentModule, EnvironmentService } from '../module/environment';
-import { ClientOptions } from 'minio';
 import { MinioConfig, MinioModule } from '@edd/common/module/minio';
+import { DynamicModule } from '@nestjs/common';
+import { ClientOptions } from 'minio';
+import { EnvironmentModule, MinioEnvironmentService } from '../module/environment';
 
 const registerMinioModule = (): DynamicModule => {
   return MinioModule.registerAsync({
     imports: [EnvironmentModule],
-    inject: [EnvironmentService],
-    useFactory: (environmentService: EnvironmentService) => {
+    inject: [MinioEnvironmentService],
+    useFactory: (minioEnvironmentService: MinioEnvironmentService) => {
       return {
-        endPoint: environmentService.minioEndpoint,
-        port: environmentService.minioPort,
-        useSSL: environmentService.minioUseSSL,
-        accessKey: environmentService.minioAccessKey,
-        secretKey: environmentService.minioSecretKey,
+        endPoint: minioEnvironmentService.minioEndpoint,
+        port: minioEnvironmentService.minioPort,
+        useSSL: minioEnvironmentService.minioUseSSL,
+        accessKey: minioEnvironmentService.minioAccessKey,
+        secretKey: minioEnvironmentService.minioSecretKey,
       } as ClientOptions & Partial<MinioConfig>;
     },
   });

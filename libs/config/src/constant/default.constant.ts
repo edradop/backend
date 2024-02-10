@@ -19,20 +19,24 @@ export const JWT_DEFAULT_SECRET = 'It-shouldBe@So_&highLevelSecretKey%&3123131&^
 export const JWT_DEFAULT_EXPIRES_IN = '3h';
 export const JWT_REFRESH_DEFAULT_SECRET = 'It-shoulddawdkladBe@So_&highLevelSecretKey%&3123131&^%';
 export const JWT_REFRESH_DEFAULT_EXPIRES_IN = '7d';
+
 export const SUPER_DEFAULT_EMAIL = 'yavuz@toneyavuz.com';
 export const SUPER_DEFAULT_USERNAME = 'yavuz';
 export const SUPER_DEFAULT_PASSWORD = 'yourSecureP@ssw0rd';
+
 export const POSTGRES_DEFAULT_HOST = '127.0.0.1';
 export const POSTGRES_DEFAULT_PORT = 5432;
 export const POSTGRES_DEFAULT_USER = 'postgres';
 export const POSTGRES_DEFAULT_PASSWORD = 'mysecretpassword';
-export const POSTGRES_DEFAULT_DATABASE = 'my_database';
+export const POSTGRES_DEFAULT_DATABASE = 'postgres';
+
 export const MINIO_DEFAULT_ENDPOINT = '127.0.0.1';
 export const MINIO_DEFAULT_PORT = 9000;
 export const MINIO_DEFAULT_USE_SSL = false;
 export const MINIO_DEFAULT_ACCESS_KEY = 'Qc8llZt2ReqIM1uA4LRE';
 export const MINIO_DEFAULT_SECRET_KEY = 'kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6';
 export const DEFAULT_USER_BUCKET_NAME = 'userbucket';
+
 export const GOOGLE_DEFAULT_CLIENT_ID =
   '315875564613-18mb3oeu6bdde8tianafi0u8dj8d6n3k.apps.googleusercontent.com';
 export const GOOGLE_DEFAULT_CLIENT_SECRET = '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';

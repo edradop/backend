@@ -37,7 +37,6 @@ export class MinioService {
       'Content-Type': file.mimetype,
     };
 
-    // We need to append the extension at the end otherwise Minio will save it as a generic file
     const fileName = hashedFileName + extension;
     await this.client.putObject(bucketName, fileName, file.buffer, metaData);
     return fileName;
@@ -48,9 +47,8 @@ export class MinioService {
   }
 
   createMulterFileObject(buffer: Readable, filename: string, mimetype: string, size: number) {
-    // Assuming `buffer` is your Buffer instance, and `filename` & `mimetype` are strings
     const multerFile = {
-      fieldname: 'file', // This should match the name of the form field used to upload the file
+      fieldname: 'file',
       originalname: filename,
       mimetype: mimetype,
       size: size,

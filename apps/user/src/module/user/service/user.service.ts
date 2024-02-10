@@ -1,6 +1,13 @@
 import { SignUpDto } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
-import { EnvironmentService } from '@edd/config/module/environment';
+import {
+  CreateUserDto,
+  ThirdPartyName,
+  UpdatePasswordDto,
+  UpdateUserDto,
+  UserType,
+} from '@edd/common/module/user';
+import { MinioEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -9,13 +16,6 @@ import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
 import { ThirdPartyAuthentication, User } from '../export';
-import {
-  CreateUserDto,
-  UpdateUserDto,
-  UpdatePasswordDto,
-  ThirdPartyName,
-  UserType,
-} from '@edd/common/module/user';
 
 @Injectable()
 export class UserService {
@@ -30,7 +30,7 @@ export class UserService {
     @InjectRepository(ThirdPartyAuthentication)
     private readonly thirdPartyRepository: Repository<ThirdPartyAuthentication>,
     private readonly minioService: MinioService,
-    private readonly environmentService: EnvironmentService,
+    private readonly minioEnvironmentService: MinioEnvironmentService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -190,16 +190,16 @@ export class UserService {
   async uploadProfilePhoto(user: User, image: Express.Multer.File) {
     const uploaded_image = await this.minioService.uploadImage(
       image,
-      this.environmentService.userBucketName,
+      this.minioEnvironmentService.userBucketName,
     );
 
     await this.userRepository.update({ id: user.id }, { profilePhoto: uploaded_image });
 
     return {
       imageUrl: this.minioService.generateUrl(
-        this.environmentService.minioEndpoint,
-        this.environmentService.minioPort,
-        this.environmentService.userBucketName,
+        this.minioEnvironmentService.minioEndpoint,
+        this.minioEnvironmentService.minioPort,
+        this.minioEnvironmentService.userBucketName,
         uploaded_image,
       ),
       message: 'Image upload successful',
@@ -209,7 +209,7 @@ export class UserService {
   async getProfilePhoto(user: User): Promise<string> {
     if (user.profilePhoto) {
       const photo = await this.minioService.client.presignedGetObject(
-        this.environmentService.userBucketName,
+        this.minioEnvironmentService.userBucketName,
         user.profilePhoto,
       );
       return photo; // TODO: should send object not object url
