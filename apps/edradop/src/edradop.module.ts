@@ -8,7 +8,6 @@ import {
   StorageServiceMiddleware,
   UserServiceMiddleware,
 } from './middleware';
-import { AuthenticationModule } from './module/authentication';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { AuthenticationModule } from './module/authentication';
     //     limit: 100,
     //   },
     // ]),
-    AuthenticationModule,
   ],
   controllers: [],
   providers: [],
