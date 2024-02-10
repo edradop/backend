@@ -98,19 +98,19 @@ export class HttpEnvironmentService {
   url(name: Exclude<ExtractName<keyof InstanceType<typeof HttpEnvironmentService>>, 'url'>) {
     switch (name) {
       case 'analytic':
-        return `http://${this.analyticHost}:${this.analyticPort}/`;
+        return `http://${this.analyticHost}:${this.analyticPort}`;
       case 'authentication':
-        return `http://${this.authenticationHost}:${this.authenticationPort}/`;
+        return `http://${this.authenticationHost}:${this.authenticationPort}`;
       case 'communication':
-        return `http://${this.communicationHost}:${this.communicationPort}/`;
+        return `http://${this.communicationHost}:${this.communicationPort}`;
       case 'edradop':
-        return `http://${this.edradopHost}:${this.edradopPort}/`;
+        return `http://${this.edradopHost}:${this.edradopPort}`;
       case 'payment':
-        return `http://${this.paymentHost}:${this.paymentPort}/`;
+        return `http://${this.paymentHost}:${this.paymentPort}`;
       case 'storage':
-        return `http://${this.storageHost}:${this.storagePort}/`;
+        return `http://${this.storageHost}:${this.storagePort}`;
       case 'user':
-        return `http://${this.userHost}:${this.userPort}/`;
+        return `http://${this.userHost}:${this.userPort}`;
       default:
         return '';
     }

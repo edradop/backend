@@ -1,9 +1,15 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SwaggerOptions } from './swagger.type';
 import { swaggerStyle } from './swagger.style';
+import { SwaggerOptions } from './swagger.type';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { IS_PRODUCTION } from '../constant';
 
-function swagger(app: INestApplication<any>, { title, description, version }: SwaggerOptions) {
+function swagger(
+  app: INestApplication<any>,
+  { title, description, version, jsonFolder }: SwaggerOptions,
+) {
   const swaggerConfig = new DocumentBuilder()
     .setTitle(title)
     .setDescription(description)
@@ -12,9 +18,18 @@ function swagger(app: INestApplication<any>, { title, description, version }: Sw
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
+  if (!IS_PRODUCTION && jsonFolder) {
+    console.log(join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'));
+    writeFileSync(
+      join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'),
+      JSON.stringify(document),
+      'utf8',
+    );
+  }
   SwaggerModule.setup('swagger', app, document, {
     customCss: swaggerStyle,
   });
+  return document;
 }
 
 export { swagger };

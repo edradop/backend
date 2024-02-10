@@ -1,5 +1,4 @@
 import { SignUpDto } from '@edd/common/module/authentication';
-import { USER_DEFAULT_HOST } from '@edd/config';
 import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
@@ -11,8 +10,7 @@ export class UserService {
   private readonly logger = new Logger(`Common ${UserService.name}`);
 
   constructor(private readonly httpEnvironmentService: HttpEnvironmentService) {
-    const port = this.httpEnvironmentService.userPort;
-    this.userServiceUrl = `http://${USER_DEFAULT_HOST}:${port}`;
+    this.userServiceUrl = this.httpEnvironmentService.url('user');
   }
 
   async validateUserWithEmail(email: string, password: string): Promise<any> {

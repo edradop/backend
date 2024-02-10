@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # default environment
 .env
+
+# swagger file
+swagger.json

@@ -8,11 +8,13 @@ import {
 import { TUser } from '@edd/common/module/user';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { readFileSync } from 'fs';
 import { JwtRefreshAuthenticationGuard } from '../guard';
 import { AuthenticationService } from '../service';
+import { join } from 'path';
 
 @ApiTags('authentication')
-@Controller({ path: 'authentication', version: '1' })
+@Controller({ path: '', version: '1' })
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
@@ -47,5 +49,14 @@ export class AuthenticationController {
   validate(@RequestUser() req: { user: TUser }) {
     const { user } = req;
     return user as TUser;
+  }
+
+  @Public()
+  @Get('swagger.json')
+  swagger() {
+    return readFileSync(
+      join(__dirname, '../../..', 'apps/authentication/src', 'swagger.json'),
+      'utf-8',
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { AuthenticationModule } from './authentication.module';
 
-import { commonMiddleware, connectMicroServicesMiddleware } from '@edd/common';
+import { commonMiddleware } from '@edd/common';
 import { SwaggerOptions, swagger } from '@edd/config';
 import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { Logger } from '@nestjs/common';
@@ -10,6 +10,7 @@ const swaggerOptions: SwaggerOptions = {
   title: 'Authentication API',
   description: 'Edradop Authentication API description',
   version: '0.1.0',
+  jsonFolder: 'authentication',
 };
 
 async function bootstrap() {
@@ -21,8 +22,7 @@ async function bootstrap() {
   commonMiddleware(app);
   swagger(app, swaggerOptions);
 
-  await connectMicroServicesMiddleware(app, host, port);
-  await app.listen(port);
+  await app.listen(port, host);
 
   return app;
 }

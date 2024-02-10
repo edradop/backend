@@ -1,15 +1,9 @@
 import { commonMiddleware } from '@edd/common';
-import { SwaggerOptions, swagger } from '@edd/config';
 import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { EdradopModule } from './edradop.module';
-
-const swaggerOptions: SwaggerOptions = {
-  title: 'Edradop API',
-  description: 'Edradop API description',
-  version: '0.1.0',
-};
 
 async function bootstrap() {
   const app = await NestFactory.create(EdradopModule, { cors: true });
@@ -17,7 +11,20 @@ async function bootstrap() {
   const port = httpEnvironmentService.edradopPort;
 
   commonMiddleware(app);
-  swagger(app, swaggerOptions);
+  const options = new DocumentBuilder()
+    .setTitle('Your API Title')
+    .setDescription('Your API description')
+    .setVersion('1.0')
+    // .addBearerAuth()
+    .addServer(`${httpEnvironmentService.url('analytic')}/v1/swagger.json`, 'Analytic')
+    .addServer(`${httpEnvironmentService.url('authentication')}/v1/swagger.json`, 'Authentication')
+    .addServer(`${httpEnvironmentService.url('payment')}/v1/swagger.json`, 'payment')
+    .addServer(`${httpEnvironmentService.url('storage')}/v1/swagger.json`, 'Storage')
+    .addServer(`${httpEnvironmentService.url('user')}/v1/swagger.json`, 'User')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(port);
 
