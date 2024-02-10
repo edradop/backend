@@ -12,11 +12,11 @@ import { UserModule } from './module/user';
   imports: [
     ConfigModule.forRoot(),
     EnvironmentModule,
-    registerJwtModule(),
-    registerUserDatabaseModule(),
     UserModule,
     RoleModule,
     AuthorityModule,
+    registerJwtModule(),
+    registerUserDatabaseModule(),
   ],
   providers: [appFreezePipe, appJwtGuard, appRoleGuard],
   exports: [],

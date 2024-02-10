@@ -1,5 +1,4 @@
 import { SignUpDto } from '@edd/common/module/authentication';
-import { MinioService } from '@edd/common/module/minio/service';
 import {
   CreateUserDto,
   ThirdPartyName,
@@ -7,9 +6,10 @@ import {
   UpdateUserDto,
   UserType,
 } from '@edd/common/module/user';
-import { MinioEnvironmentService } from '@edd/config/module/environment';
+import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import axios from 'axios';
 import * as bcrypt from 'bcrypt';
 import { TokenPayload } from 'google-auth-library';
 import { Repository } from 'typeorm';
@@ -29,8 +29,7 @@ export class UserService {
     private readonly authorityRepository: Repository<Authority>,
     @InjectRepository(ThirdPartyAuthentication)
     private readonly thirdPartyRepository: Repository<ThirdPartyAuthentication>,
-    private readonly minioService: MinioService,
-    private readonly minioEnvironmentService: MinioEnvironmentService,
+    private readonly httpEnvironmentService: HttpEnvironmentService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -186,34 +185,34 @@ export class UserService {
   async remove(id: string): Promise<void> {
     await this.userRepository.update({ id }, { status: UserType.DELETED });
   }
-
-  async uploadProfilePhoto(user: User, image: Express.Multer.File) {
-    const uploaded_image = await this.minioService.uploadImage(
-      image,
-      this.minioEnvironmentService.userBucketName,
+  async getProfilePhoto(token?: string): Promise<string> {
+    const response = await axios.get(
+      `${this.httpEnvironmentService.url('storage')}/v1/user/profile-photo`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
-
-    await this.userRepository.update({ id: user.id }, { profilePhoto: uploaded_image });
-
-    return {
-      imageUrl: this.minioService.generateUrl(
-        this.minioEnvironmentService.minioEndpoint,
-        this.minioEnvironmentService.minioPort,
-        this.minioEnvironmentService.userBucketName,
-        uploaded_image,
-      ),
-      message: 'Image upload successful',
-    };
+    return response.data;
   }
 
-  async getProfilePhoto(user: User): Promise<string> {
-    if (user.profilePhoto) {
-      const photo = await this.minioService.client.presignedGetObject(
-        this.minioEnvironmentService.userBucketName,
-        user.profilePhoto,
-      );
-      return photo; // TODO: should send object not object url
-    }
-    throw new HttpException('Profile photo not found', HttpStatus.NOT_FOUND);
+  async uploadProfilePhoto(token: string, user: User, image: Express.Multer.File) {
+    const response = await axios.post(
+      `${this.httpEnvironmentService.url('storage')}/v1/upload-profile-photo`,
+      image, // TODO: need to change
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    await this.userRepository.update(
+      { id: user.id },
+      { profilePhoto: response.data.uploadedImage },
+    );
+
+    return response.data;
   }
 }

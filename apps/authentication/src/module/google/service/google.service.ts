@@ -1,7 +1,7 @@
 import { LoginResponse } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
-import { TUser, UserService } from '@edd/common/module/user';
-import { EnvironmentService, MinioEnvironmentService } from '@edd/config/module/environment';
+import { TUser } from '@edd/common/module/user';
+import { EnvironmentService, HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { generateToken } from 'apps/authentication/util';
@@ -15,9 +15,8 @@ export class GoogleService {
   private readonly logger = new Logger(GoogleService.name);
   constructor(
     private jwtService: JwtService,
-    private usersService: UserService,
     private environmentService: EnvironmentService,
-    private minioEnvironmentService: MinioEnvironmentService,
+    private httpEnvironmentService: HttpEnvironmentService,
     private minioService: MinioService,
   ) {}
 
@@ -35,25 +34,33 @@ export class GoogleService {
     return ticket;
   }
   async continue(response: TokenPayload): Promise<LoginResponse> {
-    const savedPicture: string | undefined = await this.savePicture(response);
-    try {
-      const user = await this.usersService.continueWithGoogle({
+    const { data: user } = await axios.post(
+      `${this.httpEnvironmentService.url('user')}/v1/user/continue-with-google`,
+      response,
+    );
+    const loginResponse = { user, ...(await this.generateToken(user)) };
+    const savedPicture: string | undefined = await this.savePicture(
+      response,
+      loginResponse.accessToken,
+    );
+
+    if (savedPicture) {
+      return await axios.put(`${this.httpEnvironmentService.url('user')}/v1/user/${user.id}`, {
         ...response,
-        picture: savedPicture,
+        profilePhoto: savedPicture,
       });
-      if (user) {
-        return { user, ...(await this.generateToken(user)) };
-      }
-      throw new HttpException(
-        'User not found or cannot be created due to an internal error',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    } catch (error) {
-      throw new HttpException(error as string, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    if (user) {
+      return user;
+    }
+
+    throw new HttpException(
+      'User not found or cannot be created due to an internal error',
+      HttpStatus.UNPROCESSABLE_ENTITY,
+    );
   }
 
-  async savePicture(response: TokenPayload) {
+  async savePicture(response: TokenPayload, token: string) {
     if (response.picture) {
       // const picture = await this.getImageAsStream(response.picture);
       try {
@@ -65,13 +72,23 @@ export class GoogleService {
           picture.headers['content-type'],
           +picture.headers['content-length'],
         );
+        const data = await axios
+          .post(
+            `${this.httpEnvironmentService.url('storage')}/v1/upload-profile-photo`,
+            file, // TODO: need to change
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`, // need to change
+              },
+            },
+          )
+          .then((res) => res.data);
 
-        // console.log(picture.data);
-        return await this.minioService.uploadImage(
-          file,
-          this.minioEnvironmentService.userBucketName,
-        );
-      } catch (error) {}
+        return data.uploadedImage;
+      } catch (error) {
+        this.logger.error(error);
+      }
     }
     return response.picture;
   }

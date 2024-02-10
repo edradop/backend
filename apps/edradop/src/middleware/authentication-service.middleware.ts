@@ -15,7 +15,6 @@ export class AuthenticationServiceMiddleware implements NestMiddleware {
   });
 
   use(req: Request, res: Response, next: () => void) {
-    //console.log(res);
     this.proxy(req, res, next);
   }
 }

@@ -1,9 +1,10 @@
-import { Authorities, Public } from '@edd/common';
+import { Authorities, Public, extractTokenFromHeader } from '@edd/common';
 import {
   EmailPasswordDto,
   SignUpDto,
   UsernamePasswordDto,
 } from '@edd/common/module/authentication';
+import { CreateUserDto, UpdatePasswordDto } from '@edd/common/module/user';
 import { AuthorityEnum } from '@edd/config';
 import {
   Body,
@@ -22,10 +23,10 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 import { TokenPayload } from 'google-auth-library';
 import { User } from '../export';
 import { UserService } from '../service';
-import { CreateUserDto, UpdatePasswordDto } from '@edd/common/module/user';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -59,8 +60,9 @@ export class UserController {
   }
 
   @Get('profile-photo')
-  profilePhoto(@Req() req: { user: User }) {
-    return this.userService.getProfilePhoto(req.user);
+  profilePhoto(@Req() req: Request) {
+    const token = extractTokenFromHeader(req) as string;
+    return this.userService.getProfilePhoto(token);
   }
 
   @Get(':id')
@@ -103,14 +105,14 @@ export class UserController {
 
   @UseInterceptors(FileInterceptor('file'))
   @Post('upload-profile-photo')
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes('application/json')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
         file: {
           type: 'string',
-          format: 'binary',
+          format: 'base64',
         },
       },
     },
@@ -120,6 +122,7 @@ export class UserController {
     @Req() req: { user: User },
     @UploadedFile(
       new ParseFilePipe({
+        fileIsRequired: true,
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
@@ -128,6 +131,7 @@ export class UserController {
     )
     file: Express.Multer.File,
   ) {
-    return this.userService.uploadProfilePhoto(req.user, file);
+    const token = extractTokenFromHeader(req as unknown as Request) as string;
+    return this.userService.uploadProfilePhoto(token, req.user, file);
   }
 }

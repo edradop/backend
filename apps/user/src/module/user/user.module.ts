@@ -1,6 +1,5 @@
-import { AuthenticationModule } from '@edd/common/module/authentication';
 import { UserType } from '@edd/common/module/user';
-import { AuthorityEnum, registerMinioModule } from '@edd/config';
+import { AuthorityEnum } from '@edd/config';
 import { EnvironmentModule, EnvironmentService } from '@edd/config/module/environment';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,10 +15,8 @@ import { UserService } from './service';
     UserExportModule,
     AuthorityExportModule,
     RoleExportModule,
-    AuthenticationModule,
     UserExportModule,
     EnvironmentModule,
-    registerMinioModule(),
   ],
   controllers: [UserController],
   providers: [UserService],
@@ -62,7 +59,6 @@ async function createDefaults(
   userModel.password = environmentService.superPassword;
   userModel.status = UserType.ACTIVE;
   userModel.bio = 'super user';
-  userModel.profilePhoto = '69ddd808db0f6863f64ceec202905df9.png';
   userModel.authorities = [];
   userModel.roles = [];
   const user = _user ?? (await userRepository.save(userModel));

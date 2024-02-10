@@ -15,15 +15,12 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log(authorities);
     if (isPublic) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user as TUser;
-
-    console.log('user', user);
 
     if (!authorities || !authorities.length) {
       return true;
@@ -33,7 +30,6 @@ export class RoleGuard implements CanActivate {
     }, []);
     const userAuthorities = [...userAuthoritiesFromRoles, ...user.authorities];
 
-    console.log(authorities, userAuthorities, user);
     const hasRole = () =>
       userAuthorities.some(
         (authority: unknown) => !!authorities.find((item) => item === authority),

@@ -19,7 +19,6 @@ function swagger(
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   if (!IS_PRODUCTION && jsonFolder) {
-    console.log(join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'));
     writeFileSync(
       join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'),
       JSON.stringify(document),
