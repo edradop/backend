@@ -1,3 +1,4 @@
+import { LoginResponse } from '@edd/common/module/authentication';
 import { TAuthority, TUser } from '@edd/common/module/user';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { JwtService } from '@nestjs/jwt';
@@ -6,7 +7,7 @@ const generateToken = (
   user: TUser,
   jwtService: JwtService,
   environmentService: EnvironmentService,
-) => {
+): LoginResponse => {
   const data = {
     id: user.id,
     profilePhoto: user.profilePhoto,

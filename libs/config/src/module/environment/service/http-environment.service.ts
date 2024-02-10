@@ -27,6 +27,8 @@ import {
   STORAGE_DEFAULT_HOST,
   STORAGE_HOST,
   USER_HOST,
+  USER_CLIENT_PORT,
+  USER_CLIENT_DEFAULT_PORT,
 } from '@edd/config/constant';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -39,6 +41,9 @@ type ExtractName<S extends string> = S extends `${infer P}Port`
 @Injectable()
 export class HttpEnvironmentService {
   constructor(private readonly configService: ConfigService) {}
+  get userClientPort(): number {
+    return this.configService.get<number>(USER_CLIENT_PORT, USER_CLIENT_DEFAULT_PORT);
+  }
 
   get analyticPort(): number {
     return this.configService.get<number>(ANALYTIC_PORT, ANALYTIC_DEFAULT_PORT);

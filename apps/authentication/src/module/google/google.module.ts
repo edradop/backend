@@ -1,12 +1,11 @@
-import { Module } from '@nestjs/common';
-import { GoogleService } from './service';
-import { GoogleController } from './controller';
-import { EnvironmentModule } from '@edd/config/module/environment';
 import { registerJwtModule, registerMinioModule } from '@edd/config';
-import { UserModule } from '@edd/common/module/user';
+import { EnvironmentModule } from '@edd/config/module/environment';
+import { Module } from '@nestjs/common';
+import { GoogleController } from './controller';
+import { GoogleService } from './service';
 
 @Module({
-  imports: [EnvironmentModule, UserModule, registerJwtModule(), registerMinioModule()],
+  imports: [EnvironmentModule, registerJwtModule(), registerMinioModule()],
   providers: [GoogleService],
   controllers: [GoogleController],
 })

@@ -9,7 +9,10 @@ const registerUserClient = (): ClientsProviderAsyncOptions => {
     inject: [HttpEnvironmentService],
     useFactory: async (httpEnvironmentService: HttpEnvironmentService) => ({
       transport: Transport.TCP,
-      options: { host: httpEnvironmentService.userHost, port: httpEnvironmentService.userPort },
+      options: {
+        host: httpEnvironmentService.userHost,
+        port: httpEnvironmentService.userClientPort,
+      },
     }),
   };
 };

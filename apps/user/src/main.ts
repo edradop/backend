@@ -1,4 +1,4 @@
-import { commonMiddleware } from '@edd/common';
+import { commonMiddleware, connectMicroServicesMiddleware } from '@edd/common';
 import { SwaggerOptions, swagger } from '@edd/config';
 import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { Logger } from '@nestjs/common';
@@ -17,10 +17,12 @@ async function bootstrap() {
   const httpEnvironmentService = app.get(HttpEnvironmentService);
   const host = httpEnvironmentService.userHost;
   const port = httpEnvironmentService.userPort;
+  const clientPort = httpEnvironmentService.userClientPort;
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);
 
+  connectMicroServicesMiddleware(app, host, clientPort);
   await app.listen(port, host);
 
   return app;

@@ -15,8 +15,8 @@ const swaggerOptions: SwaggerOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(StorageModule);
   const httpEnvironmentService = app.get(HttpEnvironmentService);
-  const host = httpEnvironmentService.authenticationHost;
-  const port = httpEnvironmentService.authenticationPort;
+  const host = httpEnvironmentService.storageHost;
+  const port = httpEnvironmentService.storagePort;
 
   commonMiddleware(app);
   swagger(app, swaggerOptions);

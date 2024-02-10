@@ -1,9 +1,14 @@
 import { Authorities, Public, extractTokenFromHeader } from '@edd/common';
 import {
-  EmailPasswordDto,
   SignUpDto,
   UsernamePasswordDto,
+  ValidateUserWithEmailEvent,
 } from '@edd/common/module/authentication';
+import {
+  SIGNUP_USER_WITH_EMAIL_EVENT,
+  VALIDATE_USER_WITH_EMAIL_EVENT,
+  VALIDATE_USER_WITH_USERNAME_EVENT,
+} from '@edd/common/module/authentication/constant';
 import { CreateUserDto, UpdatePasswordDto } from '@edd/common/module/user';
 import { AuthorityEnum } from '@edd/config';
 import {
@@ -21,6 +26,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -48,8 +54,8 @@ export class UserController {
   }
 
   @Public()
-  @Post('sign-up')
-  signUp(@Body() user: SignUpDto): Promise<User> {
+  @EventPattern(SIGNUP_USER_WITH_EMAIL_EVENT)
+  signUp(user: SignUpDto): Promise<User> {
     return this.userService.signUp(user);
   }
 
@@ -78,16 +84,14 @@ export class UserController {
   }
 
   @Public()
-  @Post('by-email-password')
-  getUserByEmailPassword(@Body() { email, password }: EmailPasswordDto): Promise<User | null> {
+  @EventPattern(VALIDATE_USER_WITH_EMAIL_EVENT)
+  getUserByEmailPassword({ email, password }: ValidateUserWithEmailEvent): Promise<User | null> {
     return this.userService.getUserByEmailPassword(email, password);
   }
 
   @Public()
-  @Post('by-username-password')
-  getUserByUsernamePassword(
-    @Body() { username, password }: UsernamePasswordDto,
-  ): Promise<User | null> {
+  @EventPattern(VALIDATE_USER_WITH_USERNAME_EVENT)
+  getUserByUsernamePassword({ username, password }: UsernamePasswordDto): Promise<User | null> {
     return this.userService.getUserByUsernamePassword(username, password);
   }
 
