@@ -1,4 +1,10 @@
 import {
+  CACHE_DEFAULT_HOST,
+  CACHE_DEFAULT_PORT,
+  CACHE_DEFAULT_TTL,
+  CACHE_HOST,
+  CACHE_PORT,
+  CACHE_TTL,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   GOOGLE_DEFAULT_CLIENT_ID,
@@ -65,6 +71,18 @@ export class EnvironmentService {
   }
   get googleClientSecret(): string {
     return this.configService.get<string>(GOOGLE_CLIENT_SECRET, GOOGLE_DEFAULT_CLIENT_SECRET);
+  }
+
+  get cacheHost(): string {
+    return this.configService.get<string>(CACHE_HOST, CACHE_DEFAULT_HOST);
+  }
+
+  get cachePort(): number {
+    return this.configService.get<number>(CACHE_PORT, CACHE_DEFAULT_PORT);
+  }
+
+  get cacheTtl(): number {
+    return this.configService.get<number>(CACHE_TTL, CACHE_DEFAULT_TTL);
   }
 
   get<T>(key: string, defaultValue?: T): T | undefined {

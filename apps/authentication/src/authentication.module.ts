@@ -1,6 +1,6 @@
 import { appFreezePipe } from '@edd/common';
 import { appJwtGuard } from '@edd/common/guard/app-jwt.guard';
-import { registerJwtModule, registerUserClient } from '@edd/config';
+import { registerCacheModule, registerJwtModule, registerUserClient } from '@edd/config';
 import { EnvironmentModule } from '@edd/config/module/environment';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +13,7 @@ import { AuthenticationService } from './service';
   imports: [
     ConfigModule.forRoot(),
     EnvironmentModule,
+    registerCacheModule(),
     GoogleModule,
     registerJwtModule(),
     ClientsModule.registerAsync([registerUserClient()]),
