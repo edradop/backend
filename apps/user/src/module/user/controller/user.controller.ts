@@ -9,7 +9,7 @@ import {
   VALIDATE_USER_WITH_EMAIL_EVENT,
   VALIDATE_USER_WITH_USERNAME_EVENT,
 } from '@edd/common/module/authentication/constant';
-import { CreateUserDto, UpdatePasswordDto } from '@edd/common/module/user';
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@edd/common/module/user';
 import { AuthorityEnum } from '@edd/config';
 import {
   Body,
@@ -21,6 +21,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  Patch,
   Post,
   Req,
   UploadedFile,
@@ -60,7 +61,7 @@ export class UserController {
   }
 
   @Get()
-  @Authorities(AuthorityEnum.SUPER_USER)
+  @Authorities(AuthorityEnum.READ_USER)
   findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
@@ -69,12 +70,6 @@ export class UserController {
   profilePhoto(@Req() req: Request) {
     const token = extractTokenFromHeader(req) as string;
     return this.userService.getProfilePhoto(token);
-  }
-
-  @Get(':id')
-  @Authorities(AuthorityEnum.READ_USER)
-  async findOne(@Param('id') id: string): Promise<User | null> {
-    return await this.userService.findOne(id);
   }
 
   @Post('update-password')
@@ -100,13 +95,6 @@ export class UserController {
   getUserById(@Param('id') id: string): Promise<User | null> {
     return this.userService.findOne(id);
   }
-
-  @Delete(':id')
-  @Authorities(AuthorityEnum.DELETE_USER)
-  remove(@Param('id') id: string): Promise<void> {
-    return this.userService.remove(id);
-  }
-
   @UseInterceptors(FileInterceptor('file'))
   @Post('upload-profile-photo')
   @ApiConsumes('application/json')
@@ -137,5 +125,23 @@ export class UserController {
   ) {
     const token = extractTokenFromHeader(req as unknown as Request) as string;
     return this.userService.uploadProfilePhoto(token, req.user, file);
+  }
+
+  @Get(':id')
+  @Authorities(AuthorityEnum.READ_USER)
+  async findOne(@Param('id') id: string): Promise<User | null> {
+    return await this.userService.findOne(id);
+  }
+
+  @Patch(':id')
+  @Authorities(AuthorityEnum.UPDATE_USER)
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @Authorities(AuthorityEnum.DELETE_USER)
+  remove(@Param('id') id: string): Promise<void> {
+    return this.userService.remove(id);
   }
 }
