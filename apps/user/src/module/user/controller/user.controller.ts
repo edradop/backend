@@ -17,6 +17,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  Header,
   Logger,
   MaxFileSizeValidator,
   Param,
@@ -66,12 +67,6 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get('profile-photo')
-  profilePhoto(@Req() req: Request) {
-    const token = extractTokenFromHeader(req) as string;
-    return this.userService.getProfilePhoto(token);
-  }
-
   @Post('update-password')
   updatePassword(@Body() updatePasswordDto: UpdatePasswordDto) {
     this.logger.debug('user controller update password');
@@ -95,16 +90,26 @@ export class UserController {
   getUserById(@Param('id') id: string): Promise<User | null> {
     return this.userService.findOne(id);
   }
+
+  @Get('profile-photo')
+  // @Header('Content-Type', 'application/octet-stream')
+  // @Header('Content-Disposition', 'attachment; filename="filename.bin"')
+  @Header('Content-Type', 'image/jpeg')
+  async profilePhoto(@Req() req: Request): Promise<Buffer> {
+    const token = extractTokenFromHeader(req) as string;
+    return await this.userService.getProfilePhoto(token);
+  }
+
   @UseInterceptors(FileInterceptor('file'))
   @Post('upload-profile-photo')
-  @ApiConsumes('application/json')
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
         file: {
           type: 'string',
-          format: 'base64',
+          format: 'binary',
         },
       },
     },

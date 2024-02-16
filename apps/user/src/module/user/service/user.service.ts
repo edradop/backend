@@ -11,6 +11,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import * as bcrypt from 'bcrypt';
+import * as FormData from 'form-data';
 import { TokenPayload } from 'google-auth-library';
 import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
@@ -149,6 +150,7 @@ export class UserService {
       .addSelect('row.password')
       .where('row.id = :id', { id: dto.id })
       .getOneOrFail();
+
     if (bcrypt.compareSync(dto.password, user?.password as string)) {
       await this.userRepository.update(dto.id, {
         password: bcrypt.hashSync(dto.newPassword, 10),
@@ -168,7 +170,7 @@ export class UserService {
       .leftJoinAndSelect('user.authorities', 'authority')
       .where('user.email = :email', { email })
       .getOneOrFail();
-    this.logger.debug(JSON.stringify(user));
+
     if (await bcrypt.compare(password, user?.password as string)) {
       this.logger.debug(`login ${user?.username} successfully`);
       return user;
@@ -185,22 +187,29 @@ export class UserService {
   async remove(id: string): Promise<void> {
     await this.userRepository.update({ id }, { status: UserType.DELETED });
   }
-  async getProfilePhoto(token?: string): Promise<string> {
+  async getProfilePhoto(token?: string): Promise<Buffer> {
     const response = await axios.get(
-      `${this.httpEnvironmentService.url('storage')}/v1/user/profile-photo`,
+      `${this.httpEnvironmentService.url('storage')}/v1/profile-photo`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          responseType: 'arraybuffer',
         },
       },
     );
-    return response.data;
+    return Buffer.from(response.data); // TODO: need to change
   }
 
-  async uploadProfilePhoto(token: string, user: User, image: Express.Multer.File) {
+  async uploadProfilePhoto(token: string, user: User, file: Express.Multer.File) {
+    const formData = new FormData();
+    formData.append('file', file.buffer, {
+      filename: file.originalname,
+      contentType: file.mimetype,
+      knownLength: file.size,
+    });
     const response = await axios.post(
       `${this.httpEnvironmentService.url('storage')}/v1/upload-profile-photo`,
-      image, // TODO: need to change
+      formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data',

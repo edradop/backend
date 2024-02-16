@@ -101,6 +101,9 @@ dependencies:
   express-session:
     specifier: ^1.17.3
     version: 1.17.3
+  form-data:
+    specifier: ^4.0.0
+    version: 4.0.0
   google-auth-library:
     specifier: ^9.6.2
     version: 9.6.2

@@ -1,4 +1,5 @@
 import { extractTokenFromHeader } from '@edd/common';
+import { TUser } from '@edd/common/module/user';
 import {
   Body,
   Controller,
@@ -8,6 +9,7 @@ import {
   ParseFilePipe,
   Post,
   Req,
+  StreamableFile,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,13 +19,18 @@ import { Request } from 'express';
 import { StorageService } from '../service';
 
 @ApiTags('storage')
-@Controller({ path: 'storage', version: '1' })
+@Controller({ path: '', version: '1' })
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
   @Get()
   getHello(): string {
     return this.storageService.getHello();
+  }
+
+  @Get('profile-photo')
+  async profilePhoto(@Req() { user }: { user: TUser }): Promise<StreamableFile> {
+    return new StreamableFile(await this.storageService.getProfilePhoto(user));
   }
 
   @UseInterceptors(FileInterceptor('file'))
@@ -35,7 +42,7 @@ export class StorageController {
       properties: {
         file: {
           type: 'string',
-          format: 'base64',
+          format: 'binary',
         },
       },
     },
@@ -45,6 +52,7 @@ export class StorageController {
     @Req() req: Request,
     @UploadedFile(
       new ParseFilePipe({
+        fileIsRequired: true,
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),

@@ -1,7 +1,8 @@
 import { MinioService } from '@edd/common/module/minio/service';
+import { TUser } from '@edd/common/module/user';
 import { MinioEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from 'apps/user/src/module/user/export';
+import internal from 'stream';
 
 @Injectable()
 export class StorageService {
@@ -13,13 +14,13 @@ export class StorageService {
     private readonly minioEnvironmentService: MinioEnvironmentService,
   ) {}
 
-  async getProfilePhoto(user: User): Promise<string> {
+  async getProfilePhoto(user: TUser): Promise<internal.Readable> {
     if (user.profilePhoto) {
-      const photo = await this.minioService.client.presignedGetObject(
+      const photo = await this.minioService.client.getObject(
         this.minioEnvironmentService.userBucketName,
         user.profilePhoto,
       );
-      return photo; // TODO: should send object not object url
+      return photo;
     }
     throw new HttpException('Profile photo not found', HttpStatus.NOT_FOUND);
   }

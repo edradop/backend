@@ -15,8 +15,8 @@ import { EnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientProxy } from '@nestjs/microservices';
-import { generateToken } from 'apps/authentication/util';
 import { Observable, map } from 'rxjs';
+import { generateToken } from '../../util';
 
 @Injectable()
 export class AuthenticationService {

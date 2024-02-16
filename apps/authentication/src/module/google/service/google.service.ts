@@ -4,10 +4,10 @@ import { TUser } from '@edd/common/module/user';
 import { EnvironmentService, HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { generateToken } from 'apps/authentication/util';
 import axios, { AxiosResponse } from 'axios';
 import { LoginTicket, OAuth2Client, TokenPayload } from 'google-auth-library';
 import { Readable } from 'stream';
+import { generateToken } from '../../../../util';
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
 @Injectable()
