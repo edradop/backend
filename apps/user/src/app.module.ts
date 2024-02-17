@@ -8,6 +8,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { AuthorityModule } from './module/authority';
 import { RoleModule } from './module/role';
 import { UserModule } from './module/user';
+import { TenantModule } from './module/tenant/tenant.module';
 
 @Module({
   imports: [
@@ -19,8 +20,8 @@ import { UserModule } from './module/user';
     AuthorityModule,
     registerJwtModule(),
     registerUserDatabaseModule(),
+    TenantModule,
   ],
   providers: [appFreezePipe, appJwtGuard, appRoleGuard],
-  exports: [],
 })
 export class AppModule {}
