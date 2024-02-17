@@ -1,4 +1,4 @@
-import { UserType } from '@edd/common/module/user';
+import { UserType } from '@edd/common/type/user';
 import { AuthorityEnum } from '@edd/config';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { Injectable } from '@nestjs/common';

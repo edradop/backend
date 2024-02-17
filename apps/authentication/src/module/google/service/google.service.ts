@@ -1,5 +1,5 @@
 import { MinioService } from '@edd/common/module/minio/service';
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 import { LoginResponse } from '@edd/common/type/authentication';
 import { EnvironmentService, HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
@@ -35,7 +35,7 @@ export class GoogleService {
   }
   async continue(response: TokenPayload): Promise<LoginResponse> {
     const { data: user } = await axios.post(
-      `${this.httpEnvironmentService.url('user')}/v1/user/continue-with-google`,
+      `${this.httpEnvironmentService.url('user')}/v1/authentication/continue-with-google`,
       response,
     );
     const loginResponse = { user, ...(await this.generateToken(user)) };

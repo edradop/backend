@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthorityExportModule } from '../authority/export';
 import { RoleExportModule } from '../role/export';
-import { UserController } from './controller';
+import { AuthenticationController, ProfileController, UserController } from './controller';
 import { UserExportModule } from './export';
-import { ScheduleService, UserService } from './service';
+import { AuthenticationService, ProfileService, ScheduleService, UserService } from './service';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ScheduleService, UserService } from './service';
     EnvironmentModule,
     ScheduleModule,
   ],
-  controllers: [UserController],
-  providers: [UserService, ScheduleService],
+  controllers: [UserController, AuthenticationController, ProfileController],
+  providers: [UserService, ScheduleService, AuthenticationService, ProfileService],
 })
 export class UserModule {}

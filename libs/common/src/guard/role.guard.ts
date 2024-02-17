@@ -2,7 +2,7 @@ import { AUTHORITY, IS_PUBLIC } from '@edd/config';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { TUser } from '../module/user';
+import { TUser } from '../type/user';
 
 @Injectable()
 export class RoleGuard implements CanActivate {

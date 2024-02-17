@@ -1,4 +1,4 @@
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 
 type LoginResponse = {
   user?: TUser;

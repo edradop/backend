@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 import { Role } from '../../../role/export';
 import { Authority } from '../../../authority/export';
-import { UserType } from '@edd/common/module/user';
+import { UserType } from '@edd/common/type/user';
 import { ThirdPartyAuthentication } from './third-party-authentication.entity';
 
 @Entity()

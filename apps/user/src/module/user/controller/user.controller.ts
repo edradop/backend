@@ -1,34 +1,8 @@
-import { Authorities, Public, extractTokenFromHeader } from '@edd/common';
-import {
-  SIGNUP_USER_WITH_EMAIL_EVENT,
-  VALIDATE_USER_WITH_EMAIL_EVENT,
-  VALIDATE_USER_WITH_USERNAME_EVENT,
-} from '@edd/common/constant/user';
-import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@edd/common/module/user';
-import { EmailPasswordDto, SignUpDto, UsernamePasswordDto } from '@edd/common/type/authentication';
+import { Authorities } from '@edd/common';
+import { CreateUserDto, UpdateUserDto } from '@edd/common/type/user';
 import { AuthorityEnum } from '@edd/config';
-import {
-  Body,
-  Controller,
-  Delete,
-  FileTypeValidator,
-  Get,
-  Header,
-  Logger,
-  MaxFileSizeValidator,
-  Param,
-  ParseFilePipe,
-  Patch,
-  Post,
-  Req,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
-import { TokenPayload } from 'google-auth-library';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User } from '../export';
 import { UserService } from '../service';
 
@@ -36,7 +10,6 @@ import { UserService } from '../service';
 @ApiBearerAuth()
 @Controller({ path: 'user', version: '1' })
 export class UserController {
-  private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
   @Post()
@@ -45,87 +18,10 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Public()
-  @Post('continue-with-google')
-  continueWithGoogle(@Body() tokenPayload: TokenPayload): Promise<User> {
-    return this.userService.continueWithGoogle(tokenPayload);
-  }
-
-  @Public()
-  @MessagePattern(SIGNUP_USER_WITH_EMAIL_EVENT)
-  signUp(user: SignUpDto): Promise<User> {
-    return this.userService.signUp(user);
-  }
-
   @Get()
   @Authorities(AuthorityEnum.READ_USER)
   findAll(): Promise<User[]> {
     return this.userService.findAll();
-  }
-
-  @Post('update-password')
-  updatePassword(@Body() updatePasswordDto: UpdatePasswordDto) {
-    this.logger.debug('user controller update password');
-    return this.userService.updatePassword(updatePasswordDto);
-  }
-
-  @Public()
-  @MessagePattern(VALIDATE_USER_WITH_EMAIL_EVENT)
-  getUserByEmailPassword({ email, password }: EmailPasswordDto): Promise<User | null> {
-    return this.userService.getUserByEmailPassword(email, password);
-  }
-
-  @Public()
-  @MessagePattern(VALIDATE_USER_WITH_USERNAME_EVENT)
-  getUserByUsernamePassword({ username, password }: UsernamePasswordDto): Promise<User | null> {
-    return this.userService.getUserByUsernamePassword(username, password);
-  }
-
-  @Public()
-  @Get('by-id/:id')
-  getUserById(@Param('id') id: string): Promise<User | null> {
-    return this.userService.findOne(id);
-  }
-
-  @Get('profile-photo')
-  // @Header('Content-Type', 'application/octet-stream')
-  // @Header('Content-Disposition', 'attachment; filename="filename.bin"')
-  @Header('Content-Type', 'image/jpeg')
-  async profilePhoto(@Req() req: Request): Promise<Buffer> {
-    const token = extractTokenFromHeader(req) as string;
-    return await this.userService.getProfilePhoto(token);
-  }
-
-  @UseInterceptors(FileInterceptor('file'))
-  @Post('upload-profile-photo')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  uploadFileAndFailValidation(
-    @Body() _body: unknown,
-    @Req() req: { user: User },
-    @UploadedFile(
-      new ParseFilePipe({
-        fileIsRequired: true,
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
-  ) {
-    const token = extractTokenFromHeader(req as unknown as Request) as string;
-    return this.userService.uploadProfilePhoto(token, req.user, file);
   }
 
   @Get(':id')

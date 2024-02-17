@@ -1,4 +1,4 @@
-import { TAuthority, TUser } from '@edd/common/module/user';
+import { TAuthority, TUser } from '@edd/common/type/user';
 import { LoginResponse } from '@edd/common/type/authentication';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { JwtService } from '@nestjs/jwt';

@@ -3,7 +3,7 @@ import {
   VALIDATE_USER_WITH_EMAIL_EVENT,
   VALIDATE_USER_WITH_USERNAME_EVENT,
 } from '@edd/common/constant/user';
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 import {
   EmailPasswordDto,
   LoginResponse,

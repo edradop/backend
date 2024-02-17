@@ -1,5 +1,5 @@
 import { MinioService } from '@edd/common/module/minio/service';
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 import { MinioEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import internal from 'stream';

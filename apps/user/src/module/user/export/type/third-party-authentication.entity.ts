@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { ThirdPartyName } from '@edd/common/module/user';
+import { ThirdPartyName } from '@edd/common/type/user';
 
 @Entity()
 export class ThirdPartyAuthentication {

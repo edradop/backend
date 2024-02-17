@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TenantService } from '../service';
 import { CreateTenantDto, UpdateTenantDto } from '@edd/common/type/tenant';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { TenantService } from '../service';
 
-@Controller('tenant')
+@ApiTags('tenant')
+@ApiBearerAuth()
+@Controller({ path: 'tenant', version: '1' })
 export class TenantController {
   constructor(private readonly tenantService: TenantService) {}
 

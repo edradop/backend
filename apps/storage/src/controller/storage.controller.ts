@@ -1,5 +1,5 @@
 import { extractTokenFromHeader } from '@edd/common';
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 import {
   Body,
   Controller,

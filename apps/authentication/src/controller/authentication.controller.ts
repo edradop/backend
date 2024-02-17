@@ -1,5 +1,5 @@
 import { Public, RequestUser } from '@edd/common';
-import { TUser } from '@edd/common/module/user';
+import { TUser } from '@edd/common/type/user';
 import {
   EmailPasswordDto,
   LoginResponse,
