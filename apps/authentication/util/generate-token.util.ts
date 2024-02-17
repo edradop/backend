@@ -1,5 +1,5 @@
-import { LoginResponse } from '@edd/common/module/authentication';
 import { TAuthority, TUser } from '@edd/common/module/user';
+import { LoginResponse } from '@edd/common/type/authentication';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { JwtService } from '@nestjs/jwt';
 

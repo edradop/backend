@@ -1,4 +1,3 @@
-import { SignUpDto } from '@edd/common/module/authentication';
 import {
   CreateUserDto,
   ThirdPartyName,
@@ -6,6 +5,7 @@ import {
   UpdateUserDto,
   UserType,
 } from '@edd/common/module/user';
+import { SignUpDto } from '@edd/common/type/authentication';
 import { HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

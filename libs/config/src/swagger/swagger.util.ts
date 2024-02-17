@@ -20,7 +20,7 @@ function swagger(
 
   if (!IS_PRODUCTION && jsonFolder) {
     writeFileSync(
-      join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'),
+      join(__dirname, '../../..', 'apps', jsonFolder, 'src', 'swagger.json'), // TODO: fix this
       JSON.stringify(document),
       'utf8',
     );

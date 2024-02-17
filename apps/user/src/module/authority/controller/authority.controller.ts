@@ -1,5 +1,5 @@
 import { Authorities } from '@edd/common';
-import { CreateAuthorityDto, UpdateAuthorityDto } from '@edd/common/module/authority/type';
+import { CreateAuthorityDto, UpdateAuthorityDto } from '@edd/common/type/authority';
 import { AuthorityEnum } from '@edd/config';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';

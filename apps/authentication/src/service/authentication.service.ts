@@ -1,15 +1,15 @@
 import {
+  SIGNUP_USER_WITH_EMAIL_EVENT,
+  VALIDATE_USER_WITH_EMAIL_EVENT,
+  VALIDATE_USER_WITH_USERNAME_EVENT,
+} from '@edd/common/constant/user';
+import { TUser } from '@edd/common/module/user';
+import {
   EmailPasswordDto,
   LoginResponse,
   SignUpDto,
   UsernamePasswordDto,
-} from '@edd/common/module/authentication';
-import {
-  SIGNUP_USER_WITH_EMAIL_EVENT,
-  VALIDATE_USER_WITH_EMAIL_EVENT,
-  VALIDATE_USER_WITH_USERNAME_EVENT,
-} from '@edd/common/module/authentication/constant';
-import { TUser } from '@edd/common/module/user';
+} from '@edd/common/type/authentication';
 import { USER_CLIENT_PROXY } from '@edd/config';
 import { EnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
@@ -28,7 +28,7 @@ export class AuthenticationService {
     private readonly userClient: ClientProxy,
   ) {}
   loginWithEmail(dto: EmailPasswordDto): Observable<LoginResponse | null> {
-    this.logger.debug(`loginWithEmail: ${JSON.stringify(dto)}`);
+    this.logger.debug(`loginWithEmail: ${dto.email} ${dto.password.replace(/./g, '*')}`);
     return this.userClient.send(VALIDATE_USER_WITH_EMAIL_EVENT, dto).pipe(
       map((user) => {
         if (user) {
@@ -38,6 +38,7 @@ export class AuthenticationService {
       }),
     );
   }
+
   signUpWithEmail(dto: SignUpDto): Observable<LoginResponse | null> {
     this.logger.debug(`signUpWithEmail: ${JSON.stringify(dto)}`);
     return this.userClient.send(SIGNUP_USER_WITH_EMAIL_EVENT, dto).pipe(
@@ -61,6 +62,7 @@ export class AuthenticationService {
       }),
     );
   }
+
   refreshToken(user: TUser): LoginResponse | null {
     if (user) {
       return { user, ...this.generateToken(user) };

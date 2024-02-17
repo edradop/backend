@@ -1,11 +1,11 @@
 import { Public, RequestUser } from '@edd/common';
+import { TUser } from '@edd/common/module/user';
 import {
   EmailPasswordDto,
   LoginResponse,
   SignUpDto,
   UsernamePasswordDto,
-} from '@edd/common/module/authentication';
-import { TUser } from '@edd/common/module/user';
+} from '@edd/common/type/authentication';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
@@ -54,7 +54,7 @@ export class AuthenticationController {
   @Get('swagger.json')
   swagger() {
     return readFileSync(
-      join(__dirname, '../../..', 'apps/authentication/src', 'swagger.json'),
+      join(__dirname, '../../..', 'apps/authentication/src', 'swagger.json'), // TODO: fix this
       'utf-8',
     );
   }

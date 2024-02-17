@@ -1,15 +1,11 @@
 import { Authorities, Public, extractTokenFromHeader } from '@edd/common';
 import {
-  SignUpDto,
-  UsernamePasswordDto,
-  ValidateUserWithEmailEvent,
-} from '@edd/common/module/authentication';
-import {
   SIGNUP_USER_WITH_EMAIL_EVENT,
   VALIDATE_USER_WITH_EMAIL_EVENT,
   VALIDATE_USER_WITH_USERNAME_EVENT,
-} from '@edd/common/module/authentication/constant';
+} from '@edd/common/constant/user';
 import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@edd/common/module/user';
+import { EmailPasswordDto, SignUpDto, UsernamePasswordDto } from '@edd/common/type/authentication';
 import { AuthorityEnum } from '@edd/config';
 import {
   Body,
@@ -28,7 +24,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -56,7 +52,7 @@ export class UserController {
   }
 
   @Public()
-  @EventPattern(SIGNUP_USER_WITH_EMAIL_EVENT)
+  @MessagePattern(SIGNUP_USER_WITH_EMAIL_EVENT)
   signUp(user: SignUpDto): Promise<User> {
     return this.userService.signUp(user);
   }
@@ -74,13 +70,13 @@ export class UserController {
   }
 
   @Public()
-  @EventPattern(VALIDATE_USER_WITH_EMAIL_EVENT)
-  getUserByEmailPassword({ email, password }: ValidateUserWithEmailEvent): Promise<User | null> {
+  @MessagePattern(VALIDATE_USER_WITH_EMAIL_EVENT)
+  getUserByEmailPassword({ email, password }: EmailPasswordDto): Promise<User | null> {
     return this.userService.getUserByEmailPassword(email, password);
   }
 
   @Public()
-  @EventPattern(VALIDATE_USER_WITH_USERNAME_EVENT)
+  @MessagePattern(VALIDATE_USER_WITH_USERNAME_EVENT)
   getUserByUsernamePassword({ username, password }: UsernamePasswordDto): Promise<User | null> {
     return this.userService.getUserByUsernamePassword(username, password);
   }

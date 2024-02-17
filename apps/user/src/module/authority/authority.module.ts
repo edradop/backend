@@ -8,6 +8,5 @@ import { AuthorityService } from './service';
   imports: [AuthorityExportModule, RoleExportModule],
   controllers: [AuthorityController],
   providers: [AuthorityService],
-  exports: [],
 })
 export class AuthorityModule {}

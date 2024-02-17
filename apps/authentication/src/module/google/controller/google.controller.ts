@@ -1,9 +1,9 @@
 import { Public } from '@edd/common';
+import { LoginResponse } from '@edd/common/type/authentication';
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { TokenPayload } from 'google-auth-library';
 import { GoogleService } from '../service';
-import { LoginResponse } from '@edd/common/module/authentication';
 
 @ApiTags('google')
 @Controller({ path: 'google', version: '1' })

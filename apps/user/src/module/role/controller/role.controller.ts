@@ -1,5 +1,5 @@
 import { Authorities } from '@edd/common';
-import { CreateRoleDto, UpdateRoleDto } from '@edd/common/module/role/type';
+import { CreateRoleDto, UpdateRoleDto } from '@edd/common/type/role';
 import { AuthorityEnum } from '@edd/config';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';

@@ -1,6 +1,6 @@
-import { LoginResponse } from '@edd/common/module/authentication';
 import { MinioService } from '@edd/common/module/minio/service';
 import { TUser } from '@edd/common/module/user';
+import { LoginResponse } from '@edd/common/type/authentication';
 import { EnvironmentService, HttpEnvironmentService } from '@edd/config/module/environment';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
