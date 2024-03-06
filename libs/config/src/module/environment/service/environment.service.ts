@@ -5,6 +5,8 @@ import {
   CACHE_HOST,
   CACHE_PORT,
   CACHE_TTL,
+  FULL_AUTHORITY_ROLE_CODE,
+  FULL_AUTHORITY_ROLE_DEFAULT_CODE,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   GOOGLE_DEFAULT_CLIENT_ID,
@@ -25,6 +27,8 @@ import {
   SUPER_EMAIL,
   SUPER_PASSWORD,
   SUPER_USERNAME,
+  TENANT_CODE,
+  TENANT_DEFAULT_CODE,
 } from '@edd/config/constant';
 import { Injectable } from '@nestjs/common';
 
@@ -64,6 +68,17 @@ export class EnvironmentService {
 
   get superPassword(): string {
     return this.configService.get<string>(SUPER_PASSWORD, SUPER_DEFAULT_PASSWORD);
+  }
+
+  get fullAuthorityRoleCode(): string {
+    return this.configService.get<string>(
+      FULL_AUTHORITY_ROLE_CODE,
+      FULL_AUTHORITY_ROLE_DEFAULT_CODE,
+    );
+  }
+
+  get tenantCode(): string {
+    return this.configService.get<string>(TENANT_CODE, TENANT_DEFAULT_CODE);
   }
 
   get googleClientId(): string {

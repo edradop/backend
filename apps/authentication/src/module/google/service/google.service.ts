@@ -28,7 +28,7 @@ export class GoogleService {
         audience: process.env.GOOGLE_CLIENT_ID,
       });
     } catch (error) {
-      this.logger.error(Object.keys(error as string));
+      this.logger.error(Object.keys(error!));
       throw new HttpException('Invalid token signature', HttpStatus.BAD_REQUEST);
     }
     return ticket;

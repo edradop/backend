@@ -16,6 +16,7 @@ import { Role } from '../../../role/export';
 import { Authority } from '../../../authority/export';
 import { UserType } from '@edd/common/type/user';
 import { ThirdPartyAuthentication } from './third-party-authentication.entity';
+import { Tenant } from '../../../tenant/export';
 
 @Entity()
 export class User {
@@ -56,6 +57,12 @@ export class User {
   @Column({ type: 'varchar', length: 500, nullable: true })
   @Length(0, 500)
   profilePhoto?: string;
+
+  @OneToMany(() => Tenant, (tenant) => tenant.owner)
+  ownTenants!: Tenant[];
+
+  @ManyToMany(() => Tenant, (tenant) => tenant.users)
+  tenants!: Tenant[];
 
   @OneToMany(() => Role, (role) => role.owner)
   ownRoles!: Role[];

@@ -47,7 +47,7 @@ export class AuthenticationController {
   @Get('validate')
   validate(@RequestUser() req: { user: TUser }) {
     const { user } = req;
-    return user as TUser;
+    return user;
   }
 
   @Public()

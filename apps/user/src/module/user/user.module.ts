@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthorityExportModule } from '../authority/export';
 import { RoleExportModule } from '../role/export';
+import { TenantExportModule } from '../tenant/export';
 import { AuthenticationController, ProfileController, UserController } from './controller';
 import { UserExportModule } from './export';
 import { AuthenticationService, ProfileService, ScheduleService, UserService } from './service';
@@ -13,6 +14,7 @@ import { AuthenticationService, ProfileService, ScheduleService, UserService } f
     AuthorityExportModule,
     RoleExportModule,
     UserExportModule,
+    TenantExportModule,
     EnvironmentModule,
     ScheduleModule,
   ],

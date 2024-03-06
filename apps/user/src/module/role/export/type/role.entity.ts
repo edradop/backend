@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Authority } from '../../../authority/export';
 import { User } from '../../../user/export';
+import { Tenant } from '../../../tenant/export';
 
 @Entity()
 export class Role {
@@ -32,6 +33,9 @@ export class Role {
 
   @ManyToOne(() => User, (user) => user.ownRoles)
   owner!: User;
+
+  @ManyToOne(() => Tenant, (tenant) => tenant.roles)
+  tenant!: Tenant;
 
   @ManyToMany(() => Authority, (authority) => authority.roles)
   @JoinTable()

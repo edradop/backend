@@ -30,6 +30,8 @@ export const JWT_REFRESH_DEFAULT_EXPIRES_IN = '7d';
 export const SUPER_DEFAULT_EMAIL = 'yavuz@toneyavuz.com';
 export const SUPER_DEFAULT_USERNAME = 'yavuz';
 export const SUPER_DEFAULT_PASSWORD = 'yourSecureP@ssw0rd';
+export const FULL_AUTHORITY_ROLE_DEFAULT_CODE = 'SUPER';
+export const TENANT_DEFAULT_CODE = 'MEET';
 
 // Database Connection
 export const POSTGRES_DEFAULT_HOST = '127.0.0.1';

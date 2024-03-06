@@ -38,7 +38,7 @@ export class ProfileController {
   // @Header('Content-Disposition', 'attachment; filename="filename.bin"')
   @Header('Content-Type', 'image/jpeg') // TODO: need to change
   async profilePhoto(@Req() req: Request): Promise<Buffer> {
-    const token = extractTokenFromHeader(req) as string;
+    const token = extractTokenFromHeader(req);
     return await this.profileService.getProfilePhoto(token);
   }
 
@@ -70,7 +70,7 @@ export class ProfileController {
     )
     file: Express.Multer.File,
   ) {
-    const token = extractTokenFromHeader(req as unknown as Request) as string;
+    const token = extractTokenFromHeader(req as unknown as Request)!;
     return this.profileService.uploadProfilePhoto(token, req.user, file);
   }
 }

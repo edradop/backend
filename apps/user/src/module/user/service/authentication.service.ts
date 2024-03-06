@@ -28,16 +28,16 @@ export class AuthenticationService {
       user.username = dto.username;
     }
     const result = await this.userRepository.save(user);
-    return (await this.userRepository.findOneByOrFail({
+    return await this.userRepository.findOneByOrFail({
       id: result.id,
-    })) as User;
+    });
   }
 
   async continueWithGoogle(tokenPayload: TokenPayload): Promise<User> {
     this.logger.debug(`user service continue with google`);
     const _user = await this.userRepository.findOneOrFail({
       where: {
-        email: tokenPayload.email as string,
+        email: tokenPayload.email,
       },
       relations: ['thirdParties'],
     });

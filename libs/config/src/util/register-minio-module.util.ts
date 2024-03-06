@@ -1,6 +1,5 @@
-import { MinioConfig, MinioModule } from '@edd/common/module/minio';
+import { MinioModule } from '@edd/common/module/minio';
 import { DynamicModule } from '@nestjs/common';
-import { ClientOptions } from 'minio';
 import { EnvironmentModule, MinioEnvironmentService } from '../module/environment';
 
 const registerMinioModule = (): DynamicModule => {
@@ -14,7 +13,7 @@ const registerMinioModule = (): DynamicModule => {
         useSSL: minioEnvironmentService.minioUseSSL,
         accessKey: minioEnvironmentService.minioAccessKey,
         secretKey: minioEnvironmentService.minioSecretKey,
-      } as ClientOptions & Partial<MinioConfig>;
+      };
     },
   });
 };
