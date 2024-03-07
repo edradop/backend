@@ -25,8 +25,13 @@ export class ScheduleService {
     private readonly environmentService: EnvironmentService,
   ) {}
 
+  /**
+   * Create user, tenant, authorities and role.
+   *
+   * @return {Promise<void>}
+   */
   @Cron(new Date(Date.now() + 20 * 1000))
-  async create() {
+  async create(): Promise<void> {
     const user = await this.createUser();
     const tenant = await this.createTenant({ user });
     const authorities = await this.createAuthorities({ tenant, user });
@@ -35,7 +40,14 @@ export class ScheduleService {
     this.updateUser({ user, authorities, role, tenant });
   }
 
-  async createTenant({ user }: { user: User }) {
+  /**
+   * Create tenant if it does not exist
+   *
+   * @param {Object} param0 - Object containing user
+   * @param {User} param0.user - the owner of the tenant
+   * @returns the created tenant
+   */
+  async createTenant({ user }: { user: User }): Promise<Tenant> {
     const _tenant = await this.tenantRepository.findOne({
       where: { code: this.environmentService.tenantCode },
     });
@@ -48,6 +60,11 @@ export class ScheduleService {
     return await this.tenantRepository.save(tenantModel);
   }
 
+  /**
+   * Create super user if it does not exist
+   *
+   * @returns the created super user
+   */
   async createUser(): Promise<User> {
     const _user = await this.userRepository.findOne({
       where: { username: this.environmentService.superUsername },
@@ -68,6 +85,16 @@ export class ScheduleService {
     return await this.userRepository.save(userModel);
   }
 
+  /**
+   * Update user's authorities, role, and tenant if the user exists.
+   *
+   * @param {Object} param0 - Object containing tenant, user, role and authorities
+   * @param {User} param0.user - The user to update
+   * @param {Authority[]} param0.authorities - The authorities to assign to the user
+   * @param {Role} param0.role - The role to assign to the user
+   * @param {Tenant} param0.tenant - The tenant to assign to the user
+   * @returns {Promise<void>} - A promise that resolves when the user is updated
+   */
   async updateUser({
     user,
     authorities,
@@ -78,15 +105,24 @@ export class ScheduleService {
     authorities: Authority[];
     role: Role;
     tenant: Tenant;
-  }) {
+  }): Promise<void> {
     if (user) {
-      user.authorities = authorities;
-      user.roles = [role];
-      user.tenants = [tenant];
+      user.authorities = [...(user.authorities || []), ...authorities];
+      user.roles = [...user.roles, role];
+      user.tenants = [...user.tenants, tenant];
       await this.userRepository.update(user.id, user);
     }
   }
 
+  /**
+   * Create a new role with the given authorities, user, and tenant.
+   *
+   * @param {Object} param0 - Object containing tenant, user and authorities
+   * @param {Authority[]} param0.authorities - The list of authorities for the role
+   * @param {User} param0.user - The user associated with the role
+   * @param {Tenant} param0.tenant - The tenant associated with the role
+   * @return {Promise<Role>} The created role
+   */
   async createRole({
     authorities,
     user,
@@ -109,6 +145,14 @@ export class ScheduleService {
     return await this.roleRepository.save(roleModel);
   }
 
+  /**
+   * Create authorities for a given tenant and user.
+   *
+   * @param {Object} param0 - Object containing tenant and user
+   * @param {Tenant} param0.tenant - The tenant for which authorities are created
+   * @param {User} param0.user - The user for whom authorities are created
+   * @return {Promise<Authority[]>} The created authorities
+   */
   async createAuthorities({ tenant, user }: { tenant: Tenant; user: User }): Promise<Authority[]> {
     const authorities = [];
     for (const authorityEntity in AuthorityEnum) {
