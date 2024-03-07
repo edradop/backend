@@ -125,6 +125,9 @@ dependencies:
   mongoose:
     specifier: ^8.1.2
     version: 8.1.2
+  nodemailer:
+    specifier: ^6.9.11
+    version: 6.9.11
   pg:
     specifier: ^8.11.3
     version: 8.11.3
@@ -143,6 +146,9 @@ dependencies:
   typeorm:
     specifier: ^0.3.19
     version: 0.3.19(ioredis@5.3.2)(pg@8.11.3)(redis@4.6.12)(ts-node@10.9.2)
+  uuid:
+    specifier: ^9.0.1
+    version: 9.0.1
 
 devDependencies:
   '@nestjs/cli':
@@ -5453,6 +5459,11 @@ packages:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
     dev: true
 
+  /nodemailer@6.9.11:
+    resolution: {integrity: sha512-UiAkgiERuG94kl/3bKfE8o10epvDnl0vokNEtZDPTq9BWzIl6EFT9336SbIT4oaTBD8NmmUTLsQyXHV82eXSWg==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
   /nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
     engines: {node: '>=6'}
@@ -6825,7 +6836,7 @@ packages:
       sha.js: 2.4.11
       ts-node: 10.9.2(@types/node@20.11.4)(typescript@5.3.3)
       tslib: 2.6.2
-      uuid: 9.0.0
+      uuid: 9.0.1
       yargs: 17.7.2
     transitivePeerDependencies:
       - supports-color

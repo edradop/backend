@@ -28,5 +28,5 @@ async function bootstrap() {
 }
 
 bootstrap().then(async (app) => {
-  Logger.log(`🚀 Authentication is dad running on ${await app.getUrl()}`);
+  Logger.log(`🚀 Authentication is running on ${await app.getUrl()}`);
 });

@@ -14,5 +14,5 @@ async function bootstrap() {
 }
 
 bootstrap().then(async (app) => {
-  Logger.log(`🚀 Analytic is dad running on ${await app.getUrl()}`);
+  Logger.log(`🚀 Analytic is running on ${await app.getUrl()}`);
 });
