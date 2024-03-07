@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Authority } from '../../authority/export';
 import { Role } from '../../role/export';
-import { User } from '../export';
 import { Tenant } from '../../tenant/export';
+import { User } from '../export';
 
 @Injectable()
 export class ScheduleService {
@@ -27,9 +27,33 @@ export class ScheduleService {
 
   @Cron(new Date(Date.now() + 20 * 1000))
   async create() {
+    const user = await this.createUser();
+    const tenant = await this.createTenant({ user });
+    const authorities = await this.createAuthorities({ tenant, user });
+    const role = await this.createRole({ authorities, user, tenant });
+
+    this.updateUser({ user, authorities, role, tenant });
+  }
+
+  async createTenant({ user }: { user: User }) {
+    const _tenant = await this.tenantRepository.findOne({
+      where: { code: this.environmentService.tenantCode },
+    });
+    if (_tenant) return _tenant;
+
+    const tenantModel = new Tenant();
+    tenantModel.name = this.environmentService.tenantCode.toLowerCase().replace(/_/g, ' ');
+    tenantModel.code = this.environmentService.tenantCode;
+    tenantModel.owner = user;
+    return await this.tenantRepository.save(tenantModel);
+  }
+
+  async createUser(): Promise<User> {
     const _user = await this.userRepository.findOne({
       where: { username: this.environmentService.superUsername },
     });
+    if (_user) return _user;
+
     const userModel = new User();
     userModel.firstName = 'Super';
     userModel.lastName = 'User';
@@ -40,48 +64,69 @@ export class ScheduleService {
     userModel.bio = 'super user';
     userModel.authorities = [];
     userModel.roles = [];
-    const user = _user ?? (await this.userRepository.save(userModel));
     this.logger.debug('created super user');
-    const tenantModel = new Tenant();
-    tenantModel.name = this.environmentService.tenantCode.toLowerCase().replace(/_/g, ' ');
-    tenantModel.code = this.environmentService.tenantCode;
-    tenantModel.owner = user;
-    const _tenant = await this.tenantRepository.findOne({
-      where: { code: tenantModel.code },
+    return await this.userRepository.save(userModel);
+  }
+
+  async updateUser({
+    user,
+    authorities,
+    role,
+    tenant,
+  }: {
+    user: User;
+    authorities: Authority[];
+    role: Role;
+    tenant: Tenant;
+  }) {
+    if (user) {
+      user.authorities = authorities;
+      user.roles = [role];
+      user.tenants = [tenant];
+      await this.userRepository.update(user.id, user);
+    }
+  }
+
+  async createRole({
+    authorities,
+    user,
+    tenant,
+  }: {
+    authorities: Authority[];
+    user: User;
+    tenant: Tenant;
+  }) {
+    const _role = await this.roleRepository.findOne({
+      where: { code: this.environmentService.fullAuthorityRoleCode },
     });
-    if (!_tenant) {
-      await this.tenantRepository.save(tenantModel);
-    }
-
-    const authorities = [];
-    for (const authorityEntity in AuthorityEnum) {
-      const _authority = await this.authorityRepository.findOne({
-        where: { code: authorityEntity },
-      });
-      if (_authority === null) {
-        const authority = new Authority();
-        authority.name = authorityEntity?.replace(/_/g, ' ').toLowerCase();
-        authority.code = authorityEntity;
-        authority.owner = user;
-        const authorityModel = _authority ?? (await this.authorityRepository.save(authority));
-        authorities.push(authorityModel);
-      }
-    }
-
+    if (_role) return _role;
     const roleModel = new Role();
     roleModel.name = this.environmentService.fullAuthorityRoleCode.toLowerCase().replace(/_/g, ' ');
     roleModel.code = this.environmentService.fullAuthorityRoleCode;
     roleModel.authorities = authorities;
     roleModel.owner = user;
-    const _role = await this.roleRepository.findOne({
-      where: { code: roleModel.code },
-    });
-    const role = _role ?? (await this.roleRepository.save(roleModel));
+    roleModel.tenant = tenant;
+    return await this.roleRepository.save(roleModel);
+  }
 
-    if (user) {
-      userModel.authorities = authorities;
-      userModel.roles = [role];
-      await this.userRepository.update(user.id, user);
+  async createAuthorities({ tenant, user }: { tenant: Tenant; user: User }): Promise<Authority[]> {
+    const authorities = [];
+    for (const authorityEntity in AuthorityEnum) {
+      const _authority = await this.authorityRepository.findOne({
+        where: { code: authorityEntity },
+      });
+      if (_authority) {
+        authorities.push(_authority);
+        continue;
+      }
+      const authority = new Authority();
+      authority.name = authorityEntity?.replace(/_/g, ' ').toLowerCase();
+      authority.code = authorityEntity;
+      authority.tenant = tenant;
+      authority.owner = user;
+      const authorityModel = await this.authorityRepository.save(authority);
+      authorities.push(authorityModel);
     }
+    return authorities;
   }
 }
