@@ -108,8 +108,8 @@ export class ScheduleService {
   }): Promise<void> {
     if (user) {
       user.authorities = [...(user.authorities || []), ...authorities];
-      user.roles = [...user.roles, role];
-      user.tenants = [...user.tenants, tenant];
+      user.roles = [...(user.roles || []), role];
+      user.tenants = [...(user.tenants || []), tenant];
       await this.userRepository.update(user.id, user);
     }
   }
