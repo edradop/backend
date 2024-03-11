@@ -28,6 +28,7 @@
     "test:e2e": "jest --config ./apps/edradop/test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.11.2",
     "@nestjs/axios": "^3.0.1",
     "@nestjs/bull": "^10.0.1",
     "@nestjs/cache-manager": "^2.2.0",

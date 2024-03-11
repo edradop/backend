@@ -53,6 +53,12 @@ export const MINIO_ACCESS_KEY = 'MINIO_ACCESS_KEY';
 export const MINIO_SECRET_KEY = 'MINIO_SECRET_KEY';
 export const USER_BUCKET_NAME = 'USER_BUCKET_NAME';
 
+export const MAIL_HOST = 'MAIL_HOST';
+export const MAIL_PORT = 'MAIL_PORT';
+export const MAIL_USERNAME = 'MAIL_USERNAME';
+export const MAIL_PASSWORD = 'MAIL_PASSWORD';
+export const MAIL_NO_REPLY = 'MAIL_NO_REPLY';
+
 export const GOOGLE_CLIENT_ID = 'GOOGLE_CLIENT_ID';
 export const GOOGLE_CLIENT_SECRET = 'GOOGLE_CLIENT_SECRET';
 

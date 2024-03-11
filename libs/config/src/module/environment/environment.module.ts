@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseEnvironmentService, EnvironmentService, MinioEnvironmentService } from './service';
 import { HttpEnvironmentService } from './service';
+import { MailerEnvironmentService } from './service/mailer-environment.service';
 
 @Module({
   imports: [ConfigModule],
@@ -10,6 +11,7 @@ import { HttpEnvironmentService } from './service';
     MinioEnvironmentService,
     HttpEnvironmentService,
     DatabaseEnvironmentService,
+    MailerEnvironmentService,
   ],
   exports: [
     EnvironmentService,

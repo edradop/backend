@@ -53,6 +53,13 @@ export const MINIO_DEFAULT_ACCESS_KEY = 'Qc8llZt2ReqIM1uA4LRE';
 export const MINIO_DEFAULT_SECRET_KEY = 'kRNCtdkSTTtbkDvYYtqqn1Vy2PLi8AiO0yu3MIB6';
 export const DEFAULT_USER_BUCKET_NAME = 'userbucket';
 
+// Node mailer
+export const MAIL_DEFAULT_HOST = 'smtp.emailtest.com';
+export const MAIL_DEFAULT_PORT = 587;
+export const MAIL_DEFAULT_USERNAME = 'myuser';
+export const MAIL_DEFAULT_PASSWORD = 'mypass';
+export const MAIL_DEFAULT_NO_REPLY = 'noreply@edradop.com';
+
 // Google Authentication
 export const GOOGLE_DEFAULT_CLIENT_ID =
   '315875564613-18mb3oeu6bdde8tianafi0u8dj8d6n3k.apps.googleusercontent.com';
