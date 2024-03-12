@@ -11,10 +11,9 @@ import { AuthenticationService, ProfileService, ScheduleService, UserService } f
 @Module({
   imports: [
     UserExportModule,
-    AuthorityExportModule,
-    RoleExportModule,
-    UserExportModule,
     TenantExportModule,
+    RoleExportModule,
+    AuthorityExportModule,
     EnvironmentModule,
     ScheduleModule,
   ],

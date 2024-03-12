@@ -18,6 +18,7 @@ import { MailerEnvironmentService } from './service/mailer-environment.service';
     MinioEnvironmentService,
     HttpEnvironmentService,
     DatabaseEnvironmentService,
+    MailerEnvironmentService,
   ],
 })
 export class EnvironmentModule {}

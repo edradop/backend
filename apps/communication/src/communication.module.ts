@@ -6,7 +6,7 @@ import { CommunicationController } from './controller';
 import { CommunicationService } from './service';
 
 @Module({
-  imports: [ConfigModule.forRoot(), rootMailerModule(__dirname + '/templates'), EnvironmentModule],
+  imports: [ConfigModule.forRoot(), rootMailerModule(__dirname + '/template'), EnvironmentModule],
   controllers: [CommunicationController],
   providers: [CommunicationService],
 })
