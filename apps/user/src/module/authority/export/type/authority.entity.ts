@@ -27,7 +27,6 @@ class Authority {
   @Column({ unique: true, type: 'varchar', length: 50 })
   code!: string;
 
-  // Optional: Direct relationship with User
   @ManyToMany(() => User, (user) => user.authorities)
   users?: User[];
 

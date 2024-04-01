@@ -1,4 +1,5 @@
 import { PasswordValidation, UsernameValidation } from '@edd/common';
+import { UserType } from '@edd/common/type/user';
 import * as bcrypt from 'bcrypt';
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import {
@@ -12,11 +13,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../../../role/export';
 import { Authority } from '../../../authority/export';
-import { UserType } from '@edd/common/type/user';
-import { ThirdPartyAuthentication } from './third-party-authentication.entity';
+import { Role } from '../../../role/export';
 import { Tenant } from '../../../tenant/export';
+import { ThirdPartyAuthentication } from './third-party-authentication.entity';
 
 @Entity()
 export class User {
@@ -62,6 +62,7 @@ export class User {
   ownTenants!: Tenant[];
 
   @ManyToMany(() => Tenant, (tenant) => tenant.users)
+  @JoinTable()
   tenants!: Tenant[];
 
   @OneToMany(() => Role, (role) => role.owner)

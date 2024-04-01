@@ -131,7 +131,7 @@ export class ScheduleService {
     authorities: Authority[];
     user: User;
     tenant: Tenant;
-  }) {
+  }): Promise<Role> {
     const _role = await this.roleRepository.findOne({
       where: { code: this.environmentService.fullAuthorityRoleCode },
     });
