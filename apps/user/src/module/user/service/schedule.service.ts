@@ -110,7 +110,7 @@ export class ScheduleService {
       user.authorities = [...(user.authorities || []), ...authorities];
       user.roles = [...(user.roles || []), role];
       user.tenants = [...(user.tenants || []), tenant];
-      await this.userRepository.update(user.id, user);
+      await this.userRepository.save(user);
     }
   }
 
