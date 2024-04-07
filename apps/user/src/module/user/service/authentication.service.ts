@@ -35,27 +35,12 @@ export class AuthenticationService {
 
   async continueWithGoogle(tokenPayload: TokenPayload): Promise<User> {
     this.logger.debug(`user service continue with google`);
-    const _user = await this.userRepository.findOneOrFail({
-      where: {
-        email: tokenPayload.email,
-      },
-      relations: ['thirdParties'],
+    const _google = await this.thirdPartyRepository.findOneBy({
+      uid: tokenPayload.sub,
+      name: ThirdPartyName.GOOGLE,
     });
-    if (_user) {
-      this.logger.debug(JSON.stringify(_user));
-      if (_user.thirdParties?.find((item) => item.name === ThirdPartyName.GOOGLE)) {
-        return _user;
-      }
-      const googleModel = new ThirdPartyAuthentication();
-      googleModel.name = ThirdPartyName.GOOGLE;
-      googleModel.user = _user;
-
-      const google = await this.thirdPartyRepository.save(googleModel);
-
-      await this.userRepository.update(_user.id, {
-        thirdParties: [google],
-      });
-      return _user;
+    if (_google?.user) {
+      return _google.user;
     }
 
     const userModel = new User();
@@ -66,13 +51,14 @@ export class AuthenticationService {
 
     const googleModel = new ThirdPartyAuthentication();
     googleModel.name = ThirdPartyName.GOOGLE;
+    googleModel.uid = tokenPayload.sub;
 
     const google = await this.thirdPartyRepository.save(googleModel);
     userModel.thirdParties = [google];
-    const result = await this.userRepository.save(userModel);
-    const user = await this.userRepository.findOneByOrFail({
-      id: result.id,
-    });
+    const user = await this.userRepository.save(userModel);
+    google.user = user;
+    await this.thirdPartyRepository.save(google);
+    this.logger.debug(JSON.stringify(user));
     return user;
   }
   async findOneByEmail(email: string): Promise<User | null> {

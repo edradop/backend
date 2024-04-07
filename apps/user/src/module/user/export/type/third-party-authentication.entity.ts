@@ -16,6 +16,10 @@ export class ThirdPartyAuthentication {
   id!: string;
 
   @IsNotEmpty()
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  uid!: string;
+
+  @IsNotEmpty()
   @Column({
     type: 'enum',
     enum: ThirdPartyName,
