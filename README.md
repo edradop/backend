@@ -47,6 +47,10 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## portainer templates
+- https://raw.githubusercontent.com/ntv-one/portainer/main/template.json
+
+
 ## Test
 
 ```bash
